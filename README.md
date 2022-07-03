@@ -1,6 +1,6 @@
 # digitalSignalProcessing
 
-# digitalSignalProcessing
+##  :low_brightness: Zadanie v2
 
 Dalsza część programu w której dodaliśmy zakładkę: "Operacje 2", można w niej:
 * próbkować sygnał
