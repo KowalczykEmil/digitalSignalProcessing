@@ -4,7 +4,7 @@ public class SignalSubtraction extends AbstractSignalOperation {
 
 	@Override
 	public String getName() {
-		return "odejmin";
+		return "odejmij";
 	}
 
 	@Override
