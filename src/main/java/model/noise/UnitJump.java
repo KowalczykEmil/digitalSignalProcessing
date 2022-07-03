@@ -22,7 +22,7 @@ public class UnitJump extends AbstractNoise {
         double initialTime = params.getInitialTime();
         double finalTime = params.getInitialTime() + params.getDuration();
 
-        for (double x = initialTime; x <= finalTime; x += params.getSampling()) {
+        for (double x = initialTime; x <= finalTime; x += params.getSamplingPeriod()) {
             double y;
             if (x < 0) {
                 y = 0;

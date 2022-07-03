@@ -2,8 +2,6 @@ package model;
 
 import lombok.Data;
 
-import static model.noise.AbstractNoise.SAMPLE_DIST;
-
 @Data
 public class NoiseParam {
 
@@ -12,6 +10,18 @@ public class NoiseParam {
 	private Double duration;
 	private Double basePeriod;
 	private Double fillFactor;
-	private Double sampling = SAMPLE_DIST;
+	private Double samplingPeriod;
+
+
+	public NoiseParam copyOf() {
+		NoiseParam outputNoiseParam = new NoiseParam();
+		outputNoiseParam.setSamplingPeriod(samplingPeriod);
+		outputNoiseParam.setAmplitude(amplitude);
+		outputNoiseParam.setInitialTime(initialTime);
+		outputNoiseParam.setDuration(duration);
+		outputNoiseParam.setBasePeriod(duration);
+		outputNoiseParam.setFillFactor(fillFactor);
+		return outputNoiseParam;
+	}
 
 }

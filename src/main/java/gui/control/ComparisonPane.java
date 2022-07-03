@@ -1,8 +1,6 @@
 package gui.control;
 
 import addons.OperationException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,51 +9,36 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import model.TabsModel;
-
-import model.operation.twoSignal.*;
-import model.signal.Signal;
+import model.operation.twoSignal.SignalOperation;
+import model.signal.ComparisonSignal;
 import gui.graph.SignalTab;
 
-import java.util.ArrayList;
 
-public class OperationPane implements EventHandler {
+public class ComparisonPane implements EventHandler {
 	VBox vPane;
 	ComboBox firstSignalSelect;
 	ComboBox secondSignalSelect;
-	ComboBox operationSelect;
-	public Button generateButton;
-	private ObservableList<SignalOperation> operations;
+	public Button compareButton;
 
 
-	public OperationPane() {
-		registerOperations();
+
+	public ComparisonPane() {
 		buildView();
-	}
-
-	private void registerOperations() {
-		ArrayList<SignalOperation> operationss = new ArrayList();
-		operationss.add(new SignalAddition());
-		operationss.add(new SignalSubtraction());
-		operationss.add(new SignalMultiplication());
-		operationss.add(new SignalDivision());
-		operations = FXCollections.observableArrayList(operationss);
 	}
 
 	private void buildView() {
 		vPane = new VBox();
 		vPane.setPadding(new Insets(10,10,10,10));
 
-
 		Label labelFirstSignal = new Label("Sygnał");
 		Label labelSecondSignal = new Label("Sygnał");
-		Label labelOperation = new Label("Operacja:");
 
 		firstSignalSelect = new ComboBox();
 		secondSignalSelect = new ComboBox();
-		operationSelect = new ComboBox();
 
-		generateButton = new Button("Generuj");
-		generateButton.setOnMouseClicked(this);
+
+		compareButton = new Button("Porównaj");
+		compareButton.setOnMouseClicked(this);
 
 
 		firstSignalSelect.setItems(TabsModel.INSTANCE.getSignalPanes());
@@ -63,17 +46,16 @@ public class OperationPane implements EventHandler {
 		Callback<ListView<SignalTab>, ListCell<SignalTab>> signalCellFactory = getSignalCellFactory();
 		Callback<ListView<SignalTab>, ListCell<SignalTab>> secondSignalCellFactory = getSignalCellFactory();
 
-		operationSelect.setItems(operations);
+
 		Callback<ListView<SignalOperation>, ListCell<SignalOperation>> operationCellFactory = getOperationCellFactory();
 
 		firstSignalSelect.setButtonCell(signalCellFactory.call(null));
 		firstSignalSelect.setCellFactory(signalCellFactory);
 		secondSignalSelect.setButtonCell(secondSignalCellFactory.call(null));
 		secondSignalSelect.setCellFactory(secondSignalCellFactory);
-		operationSelect.setButtonCell(operationCellFactory.call(null));
-		operationSelect.setCellFactory(operationCellFactory);
 
-		vPane.getChildren().addAll(labelFirstSignal, firstSignalSelect, labelOperation, operationSelect, labelSecondSignal, secondSignalSelect, generateButton);
+
+		vPane.getChildren().addAll(labelFirstSignal, firstSignalSelect, labelSecondSignal, secondSignalSelect, compareButton);
 	}
 
 	private Callback<ListView<SignalOperation>, ListCell<SignalOperation>> getOperationCellFactory() {
@@ -122,21 +104,15 @@ public class OperationPane implements EventHandler {
 
 	@Override
 	public void handle(Event event) {
-		Object firstTab = firstSignalSelect.getSelectionModel().getSelectedItem();
-		Object secondTab = secondSignalSelect.getSelectionModel().getSelectedItem();
-		SignalOperation operation = (SignalOperation) operationSelect.getSelectionModel().getSelectedItem();
+		SignalTab firstTab = (SignalTab) firstSignalSelect.getSelectionModel().getSelectedItem();
+		SignalTab secondTab = (SignalTab) secondSignalSelect.getSelectionModel().getSelectedItem();
 
-		if (firstTab != null && secondTab != null && operation != null) {
-			Signal firstSignal = ((SignalTab) firstTab).getSignal();
-			Signal secondSignal = ((SignalTab) secondTab).getSignal();
-
-			if (firstSignal == null || secondSignal == null) {
-				return;
-			}
-
+		if (firstTab != null && secondTab != null){
 			try {
-				Signal output = operation.execute(firstSignal, secondSignal);
-				TabsModel.INSTANCE.addTab(output);
+
+				ComparisonSignal signal = new ComparisonSignal();
+				signal.addDataseries(firstTab, secondTab);
+				TabsModel.INSTANCE.addTab(signal);
 			} catch (OperationException ex) {
 				Alert alert = new Alert(Alert.AlertType.ERROR);
 				alert.setTitle("BŁĄD");

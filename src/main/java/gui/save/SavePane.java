@@ -1,9 +1,10 @@
-package fileWriter;
+package gui.save;
 
 import controller.BinaryController;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -22,27 +23,28 @@ import java.util.Date;
 
 import static model.noise.AbstractNoise.SAMPLE_DIST;
 
-public class Reader implements EventHandler {
-    TabsModel graphTabModel;
-    VBox vPane;
-    private Button saveButton;
+public class SavePane implements EventHandler {
+	TabsModel graphTabModel;
+	VBox vPane;
+	private Button saveButton;
 	private Slider samplingSlider;
 	private ComboBox signalSelect;
 	private Stage stage;
 
-    public Reader(TabsModel graphTabModel, Stage stage) {
-        this.graphTabModel = graphTabModel;
-        this.stage = stage;
+	public SavePane(TabsModel graphTabModel, Stage stage) {
+		this.graphTabModel = graphTabModel;
+		this.stage = stage;
 		buildView();
-    }
+	}
 
-    private void buildView() {
-        vPane = new VBox();
+	private void buildView() {
+		vPane = new VBox();
+		vPane.setPadding(new Insets(15, 15, 15, 15));
 		saveButton = new Button("Zapisz");
-		saveButton.setOnMouseClicked(this::handle);
+		saveButton.setOnMouseClicked(this);
 
 		Label labelSignal = new Label("Sygnał:");
-		Label labelSampling = new Label("Próbkowanie:");
+		Label labelSampling = new Label("Częstotliwość próbkowania [Hz]:");
 
 		samplingSlider = prepareSlider(SAMPLE_DIST);
 
@@ -52,40 +54,49 @@ public class Reader implements EventHandler {
 		signalSelect.setButtonCell(signalCellFactory.call(null));
 		signalSelect.setCellFactory(signalCellFactory);
 
-	    EventHandler<ActionEvent> event =
-			    new EventHandler<ActionEvent>() {
-				    public void handle(ActionEvent e) {
-					    SignalTab signal = (SignalTab)signalSelect.getSelectionModel().getSelectedItem();
-					    NoiseParam params = signal.getSignal().getNoiseParam();
-					    if (params != null && params.getSampling() != null) {
-					    	double SignalSampling = params.getSampling();
-						    vPane.getChildren().remove(samplingSlider);
-						    samplingSlider = prepareSlider(SignalSampling);
-						    vPane.getChildren().add(3, samplingSlider);
-					    }
+		EventHandler<ActionEvent> event =
+				new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent e) {
+						SignalTab signal = (SignalTab) signalSelect.getSelectionModel().getSelectedItem();
+						NoiseParam params = signal.getSignal().getNoiseParam();
+						if (params != null && params.getSamplingPeriod() != null) {
+							double SignalSampling = params.getSamplingPeriod();
+							vPane.getChildren().remove(samplingSlider);
+							samplingSlider = prepareSlider(SignalSampling);
+							vPane.getChildren().add(3, samplingSlider);
+						}
 
-				    }
-			    };
+					}
+				};
 
-	    signalSelect.setOnAction(event);
+		signalSelect.setOnAction(event);
 
-        vPane.getChildren().addAll(labelSignal,signalSelect, labelSampling, samplingSlider, saveButton);
-    }
+		vPane.getChildren().addAll(labelSignal, signalSelect, labelSampling, samplingSlider, saveButton);
+	}
 
 
-    private Slider prepareSlider(double sampling){
-	    Slider slider = new Slider(sampling, 10000 * sampling, sampling * 100);
-	    slider.setBlockIncrement(sampling);
-	    slider.setMajorTickUnit(sampling * 100);
-	    slider.setMinorTickCount(0);
-	    slider.setShowTickLabels(true);
-	    slider.setSnapToTicks(true);
-	    if (sampling <= 1 && sampling * 10000 >= 1) {
-		    slider.setValue(1);
-	    }
+	private Slider prepareSlider(double sampling) {
+		double samplingFrequency = 1 / sampling;
+		Slider slider = new Slider(0, samplingFrequency, samplingFrequency);
+		slider.setBlockIncrement(samplingFrequency/10);
+		slider.setMajorTickUnit((samplingFrequency/10));
+		slider.setMinorTickCount(0);
+		slider.setShowTickLabels(true);
+		slider.setSnapToTicks(true);
 
-	    return slider;
-    }
+//		Slider slider = new Slider(100, 10000, 100);
+//		slider.setBlockIncrement(100);
+//		slider.setMajorTickUnit((100));
+//		slider.setMinorTickCount(0);
+//		slider.setShowTickLabels(true);
+//		slider.setSnapToTicks(true);
+
+//	    if (sampling <= 1 && sampling * 1000000 >= 1) {
+//		    slider.setValue(1);
+//	    }
+
+		return slider;
+	}
 
 	private Callback<ListView<SignalTab>, ListCell<SignalTab>> getSignalCellFactory() {
 		return new Callback<ListView<SignalTab>, ListCell<SignalTab>>() {
@@ -109,15 +120,15 @@ public class Reader implements EventHandler {
 
 
 	public Pane getView() {
-        return vPane;
-    }
+		return vPane;
+	}
 
-    @Override
-    public void handle(Event event) {
-		Double samplingValue = samplingSlider.getValue();
-		SignalTab signal = (SignalTab)signalSelect.getSelectionModel().getSelectedItem();
+	@Override
+	public void handle(Event event) {
+		double samplingPeriod = 1 / samplingSlider.getValue();
+		SignalTab signal = (SignalTab) signalSelect.getSelectionModel().getSelectedItem();
 
-		if (samplingValue != null && signal != null) {
+		if (signal != null) {
 			BinaryController binaryController = new BinaryController();
 
 			DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -126,7 +137,7 @@ public class Reader implements EventHandler {
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 				Date date = new Date();
 				String filename = selectedDirectory + "\\" + formatter.format(date) + "_tabs.bin";
-				byte[] data = binaryController.getDataFromTab(signal, samplingValue);
+				byte[] data = binaryController.getDataFromTab(signal, samplingPeriod);
 
 				File file = new File(filename);
 				try (FileOutputStream outputStream = new FileOutputStream(file)) {
@@ -138,6 +149,6 @@ public class Reader implements EventHandler {
 
 			}
 		}
-    }
+	}
 
 }

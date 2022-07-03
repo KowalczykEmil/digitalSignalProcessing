@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -22,17 +23,17 @@ import java.util.ArrayList;
 import static addons.NumberFormatter.*;
 
 public class GeneratorPane implements EventHandler {
-	TabsModel graphTabModel;
 	VBox vPane;
 	FileLoader editor;
 	private ObservableList<Noise> noises;
 	private Signal signal;
 
-	public GeneratorPane(TabsModel graphTabModel) {
-		this.graphTabModel = graphTabModel;
+	public GeneratorPane() {
 		this.vPane = new VBox();
+		vPane.setPadding(new Insets(10,10,10,10));
 		registerNoises();
 		editor = buildView();
+//		buildView();
 	}
 
 	private void registerNoises() {
@@ -54,7 +55,8 @@ public class GeneratorPane implements EventHandler {
 
 	private FileLoader buildView() {
 		editor = new FileLoader();
-		Label signalTypeLabel = new Label("Wybierz rodzaj sygnału:");
+		//Tak na prawdę ta klasa to jest controller, być może wynieść tą metodę do klasy Widoku
+		Label signalTypeLabel = new Label("Rodzaj sygnału:");
 		editor.signalTypeSelection = new ComboBox();
 		editor.signalTypeSelection.setItems(noises);
 		Callback<ListView<Noise>, ListCell<Noise>> cellFactory = new Callback<ListView<Noise>, ListCell<Noise>>() {
@@ -87,22 +89,25 @@ public class GeneratorPane implements EventHandler {
 		editor.signalTypeSelection.setButtonCell(cellFactory.call(null));
 		editor.signalTypeSelection.setCellFactory(cellFactory);
 
-		editor.generateButton = new Button("Wygeneruj");
+		editor.generateButton = new Button("Generuj");
 		editor.generateButton.setOnAction(this);
 
 		editor.labelAmplitude = new Label("Amplituda");
-		editor.labelBasePeriod = new Label("Okres podstawowy");
 		editor.labelInitialTime = new Label("Czas początkowy");
 		editor.labelDuration = new Label("Czas trwania sygnału");
+		editor.labelBasePeriod = new Label("Okres podstawowy");
 		editor.labelFillFactor = new Label("Współczynnik wypełnienia");
 		editor.labelHistogramIntervals = new Label("Ilość przedziałów histogramu");
+		editor.labelFrequency = new Label("Częstotliwośc próbkowania");
 
 		editor.textFieldAmplitude = new TextField("1");
 		editor.textFieldInitialTime = new TextField("0");
-		editor.textFieldDuration = new TextField("10");
-		editor.textFieldBasePeriod = new TextField("1");
+		editor.textFieldDuration = new TextField("1");
+		editor.textFieldBasePeriod = new TextField("0.1");
 		editor.textFieldFillFactor = new TextField("0.5");
-		editor.textFieldHistogramIntervals = new TextField("5");
+		editor.textFieldHistogramIntervals = new TextField("10");
+
+		editor.textFieldFrequency = new TextField("10000");
 
 		setFieldFormatters();
 		setListeners();
@@ -114,6 +119,7 @@ public class GeneratorPane implements EventHandler {
 				editor.labelBasePeriod, editor.textFieldBasePeriod,
 				editor.labelFillFactor, editor.textFieldFillFactor,
 				editor.labelHistogramIntervals, editor.textFieldHistogramIntervals,
+				editor.labelFrequency, editor.textFieldFrequency,
 				editor.generateButton);
 
 		return editor;
@@ -147,6 +153,7 @@ public class GeneratorPane implements EventHandler {
 		noiseParam.setDuration(Double.valueOf(editor.textFieldDuration.getText()));
 		noiseParam.setBasePeriod(Double.valueOf(editor.textFieldBasePeriod.getText()));
 		noiseParam.setFillFactor(Double.valueOf(editor.textFieldFillFactor.getText()));
+		noiseParam.setSamplingPeriod(1/Double.valueOf(editor.textFieldFrequency.getText()));
 
 		return noiseParam;
 	}
@@ -158,7 +165,7 @@ public class GeneratorPane implements EventHandler {
 	@Override
 	public void handle(Event event) {
 		Noise selectedNoise = (Noise) editor.signalTypeSelection.getSelectionModel().getSelectedItem();
-		if (selectedNoise == null || !validInteger(editor.textFieldHistogramIntervals.getText())) {
+		if (selectedNoise == null || !validInteger(editor.textFieldHistogramIntervals.getText())) { //todo zabezpieczenia na inne pola?
 			return;
 		}
 		selectedNoise.setParams(getDataFromView());
@@ -166,6 +173,6 @@ public class GeneratorPane implements EventHandler {
 
 		signal = selectedNoise.generate();
 		signal.setIntervals(intervals);
-		graphTabModel.addTab(signal);
+		TabsModel.INSTANCE.addTab(signal);
 	}
 }

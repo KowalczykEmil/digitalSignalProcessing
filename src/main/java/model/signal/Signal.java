@@ -12,16 +12,16 @@ public interface Signal {
 
 	public void generateSignal(NoiseParam params, List<XYChart.Data<Double, Double>> dataset);
 
-	public Double getAverageValue();
-
-	public Double getAbsoluteAverageValue();
-
-	public Double getWartoscSkuteczna();
-
-	public Double getVariances();
-
-	public Double getAvgPowers();
-
+//	public Double getAverageValue();
+//
+//	public Double getAbsoluteAverageValue();
+//
+//	public Double getRMS();
+//
+//	public Double getVariance();
+//
+//	public Double getAvgPowers();
+//
 	public Chart getChart();
 
 	public StackedBarChart getHistogram();

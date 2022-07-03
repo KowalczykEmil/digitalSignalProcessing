@@ -1,6 +1,6 @@
-package model.operation;
+package model.operation.twoSignal;
 
-import exceptions.OperationException;
+import addons.OperationException;
 import model.signal.Signal;
 
 public interface SignalOperation {

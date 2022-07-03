@@ -11,12 +11,12 @@ import gui.topBar.TopMenuBar;
 public class ApplicationCPS extends Application {
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 
 		TabsModel graphTabModel = new TabsModel();
-		ControlController controlController = new ControlController(graphTabModel);
-		GraphTabController graphTabController = new GraphTabController(graphTabModel);
-		TopMenuBar topBar = new TopMenuBar(primaryStage, graphTabModel);
+		ControlController controlController = new ControlController();
+		GraphTabController graphTabController = new GraphTabController();
+		TopMenuBar topBar = new TopMenuBar(stage);
 
 		BorderPane layout = new BorderPane();
 		layout.setPadding(new Insets(15,20,10,10));
@@ -24,16 +24,15 @@ public class ApplicationCPS extends Application {
 		layout.setCenter(controlController.getView());
 		layout.setBottom(graphTabController.getView());
 
-		Scene scene = new Scene(layout, 1600, 800);
-		primaryStage.setMinWidth(1400);
-		primaryStage.setMinHeight(780);
+		Scene scene = new Scene(layout, 1400, 780);
+		stage.setMinWidth(1400);
+		stage.setMinHeight(780);
 
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Zadanie 1 - Emil i Joanna");
+		stage.setScene(scene);
+		stage.setTitle("Zadanie 2 - Emil i Joasia");
 		scene.getStylesheets().add("style.css");
 
-		primaryStage.show();
-
+		stage.show();
 	}
 
 	public static void main(String[] args) {

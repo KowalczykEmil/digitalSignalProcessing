@@ -1,4 +1,4 @@
-package model.operation;
+package model.operation.twoSignal;
 
 public class SignalMultiplication extends AbstractSignalOperation {
 

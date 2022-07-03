@@ -12,12 +12,14 @@ public class FileLoader {
 	public Label labelBasePeriod;
 	public Label labelFillFactor;
 	public Label labelHistogramIntervals;
+	public Label labelFrequency;
 
-	public TextField textFieldAmplitude;					  // Amplituda
-	public TextField textFieldBasePeriod;					  // Okres podstawowy
-	public TextField textFieldInitialTime;					  // Czas początkowy
-	public TextField textFieldDuration;						  // Czas trwania
-	public TextField textFieldFillFactor;                     // Współczynnik wypelnienia -> Trojkatny / Prostokątny
-	public TextField textFieldHistogramIntervals;			  // Przedział histogramu
+	public TextField textFieldAmplitude;
+	public TextField textFieldInitialTime;
+	public TextField textFieldDuration;
+	public TextField textFieldBasePeriod;
+	public TextField textFieldFillFactor; //tylko dla sygnałów trojkątnych i prostokątnych
+	public TextField textFieldHistogramIntervals;
+	public TextField textFieldFrequency;
 
 }

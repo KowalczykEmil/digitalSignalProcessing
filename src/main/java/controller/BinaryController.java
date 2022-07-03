@@ -20,16 +20,20 @@ public class BinaryController {
 	private final String TAB_SEPARATOR = ";";
 	private final String CONTINUOUS_SGN_TAG = "C";
 	private final String DISCRETE_SGN_TAG = "D";
-	double epsilon = 0.00001d;
+	double epsilon = 0.0000001d;
 
 	public byte[] getDataFromTab(SignalTab signalPane, Double sampling) {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		Signal signal = signalPane.getSignal();
 		List<XYChart.Data<Double, Double>> dataset = signal.getDataset();
+
 		NoiseParam params = signal.getNoiseParam();
-		params.setSampling(sampling);
-		appendProperties(stringBuilder, params);
+		NoiseParam newParams = new NoiseParam();
+		copyParams(params, newParams);
+
+		newParams.setSamplingPeriod(sampling);
+		appendProperties(stringBuilder, newParams);
 		appendAmplitudes(stringBuilder, dataset, sampling);
 		appendSignalType(stringBuilder, signal);
 
@@ -50,7 +54,7 @@ public class BinaryController {
 		stringBuilder.append(params.getDuration() + POINT_END_SEPARATOR);
 		stringBuilder.append(params.getAmplitude() + POINT_END_SEPARATOR);
 		stringBuilder.append(params.getFillFactor() + POINT_END_SEPARATOR);
-		stringBuilder.append(params.getSampling() + POINT_END_SEPARATOR);
+		stringBuilder.append(params.getSamplingPeriod() + POINT_END_SEPARATOR);
 	}
 
 	private void appendAmplitudes(StringBuilder stringBuilder, List<XYChart.Data<Double, Double>> dataset, Double sampling) {
@@ -76,17 +80,17 @@ public class BinaryController {
 			while (line != null) {
 				if (newSignal) {
 					params = new NoiseParam();
-					params.setBasePeriod(Double.valueOf(line));
+					params.setBasePeriod(line.equals("null") ? null : Double.valueOf(line));
 					line = reader.readLine();
-					params.setInitialTime(Double.valueOf(line));
+					params.setInitialTime(line.equals("null")  ? null :Double.valueOf(line));
 					line = reader.readLine();
-					params.setDuration(Double.valueOf(line));
+					params.setDuration(line.equals("null") ? null :Double.valueOf(line));
 					line = reader.readLine();
-					params.setAmplitude(Double.valueOf(line));
+					params.setAmplitude(line.equals("null")  ? null :Double.valueOf(line));
 					line = reader.readLine();
-					params.setFillFactor(Double.valueOf(line));
+					params.setFillFactor(line.equals("null")  ? null :Double.valueOf(line));
 					line = reader.readLine();
-					params.setSampling(Double.valueOf(line));
+					params.setSamplingPeriod(line.equals("null") ? null :Double.valueOf(line));
 					line = reader.readLine();
 					newSignal = false;
 					xValue = params.getInitialTime();
@@ -107,7 +111,7 @@ public class BinaryController {
 				} else {
 					Double pointY = Double.valueOf(line);
 					dataset.add(new XYChart.Data(xValue, pointY));
-					xValue = xValue + params.getSampling();
+					xValue = xValue + params.getSamplingPeriod();
 				}
 				line = reader.readLine();
 			}
@@ -119,4 +123,13 @@ public class BinaryController {
 		return signals;
 	}
 
+
+	private void copyParams(NoiseParam inputNoiseParam, NoiseParam outputNoiseParam) {
+		outputNoiseParam.setSamplingPeriod(inputNoiseParam.getSamplingPeriod());
+		outputNoiseParam.setAmplitude(inputNoiseParam.getAmplitude());
+		outputNoiseParam.setInitialTime(inputNoiseParam.getInitialTime());
+		outputNoiseParam.setDuration(inputNoiseParam.getDuration());
+		outputNoiseParam.setBasePeriod(inputNoiseParam.getBasePeriod());
+		outputNoiseParam.setFillFactor(inputNoiseParam.getFillFactor());
+	}
 }

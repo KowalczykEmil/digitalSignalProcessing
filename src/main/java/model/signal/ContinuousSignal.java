@@ -3,9 +3,6 @@ package model.signal;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import org.apache.commons.math3.util.Precision;
-
-import java.util.concurrent.Callable;
 
 public class ContinuousSignal extends AbstractSignal {
 

@@ -5,7 +5,6 @@ import model.signal.ContinuousSignal;
 import model.signal.Signal;
 
 import java.util.List;
-import java.util.Random;
 
 public class UniformNoise extends AbstractNoise {
     @Override
@@ -23,7 +22,7 @@ public class UniformNoise extends AbstractNoise {
         double initialTime = params.getInitialTime();
         double finalTime = params.getInitialTime() + params.getDuration();
 
-        for (double x = initialTime; x <= finalTime; x += params.getSampling()) {
+        for (double x = initialTime; x <= finalTime; x += params.getSamplingPeriod()) {
             double y = ((Math.random() * (amplitude - (-1 * amplitude))) + (-1 * amplitude));
             dataset.add(new XYChart.Data<>(x, y));
         }
@@ -33,6 +32,11 @@ public class UniformNoise extends AbstractNoise {
 
     @Override
     protected boolean isFillFactorEditorVisible() {
+        return false;
+    }
+
+    @Override
+    protected boolean isBasePeriodEditorVisible() {
         return false;
     }
 }

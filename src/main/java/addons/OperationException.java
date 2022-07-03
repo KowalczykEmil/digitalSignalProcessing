@@ -1,4 +1,4 @@
-package exceptions;
+package addons;
 
 public class OperationException extends Exception {
 

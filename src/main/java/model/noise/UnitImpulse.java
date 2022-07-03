@@ -39,7 +39,7 @@ public class UnitImpulse extends AbstractNoise {
 
 	@Override
 	protected void correctParams() {
-		params.setSampling(params.getBasePeriod());
+		params.setSamplingPeriod(params.getBasePeriod());
 	}
 
 	@Override

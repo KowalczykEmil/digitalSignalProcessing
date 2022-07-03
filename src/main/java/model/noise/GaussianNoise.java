@@ -1,12 +1,9 @@
 package model.noise;
 
 import javafx.scene.chart.XYChart;
-import model.NoiseParam;
 import model.signal.ContinuousSignal;
-import model.signal.DiscreteSignal;
 import model.signal.Signal;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -17,16 +14,16 @@ public class GaussianNoise extends AbstractNoise {
 		return "gaussowski";
 	}
 
+
 	protected List<XYChart.Data<Double, Double>> generateDataSeries() {
 		double amplitude = params.getAmplitude();
 		double phaseShift = params.getInitialTime();
 		double finalTime = params.getInitialTime() + params.getDuration();
-		double basePeriod = params.getBasePeriod();
 
 		Random r = new Random();
 
-		for (double x = phaseShift; x <= finalTime; x += params.getSampling()) {
-			double y = (r.nextGaussian());
+		for (double x = phaseShift; x <= finalTime; x += params.getSamplingPeriod()) {
+			double y = (r.nextGaussian()) * amplitude / 3;
 			dataset.add(new XYChart.Data<>(x, y));
 		}
 		return dataset;
@@ -39,6 +36,11 @@ public class GaussianNoise extends AbstractNoise {
 
 	@Override
 	protected boolean isFillFactorEditorVisible() {
+		return false;
+	}
+
+	@Override
+	protected boolean isBasePeriodEditorVisible() {
 		return false;
 	}
 

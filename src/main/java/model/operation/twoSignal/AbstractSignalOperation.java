@@ -1,6 +1,6 @@
-package model.operation;
+package model.operation.twoSignal;
 
-import exceptions.OperationException;
+import addons.OperationException;
 import javafx.scene.chart.XYChart;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract class AbstractSignalOperation implements SignalOperation {
-	double epsilon = 0.000001d;
-	double DOUBLE_MAX_VALUE = (2 - Math.pow(2, -23)) * Math.pow(2, 127);
+	final double epsilon = 0.000001d;
+	final double DOUBLE_MAX_VALUE = (2 - Math.pow(2, -23)) * Math.pow(2, 127);
 	NoiseParam param = new NoiseParam();
 
 	@Override
@@ -42,8 +42,8 @@ abstract class AbstractSignalOperation implements SignalOperation {
 
 	private void checkSampling(NoiseParam firstParams, NoiseParam secondParams) throws OperationException {
 		if (firstParams != null && secondParams != null ) {
-			if (!firstParams.getSampling().equals(secondParams.getSampling())) {
-				throw new OperationException("Próbkowanie obu sygnałów poinno być takie samo (" + firstParams.getSampling() + " != " + secondParams.getSampling() + ")");
+			if (!firstParams.getSamplingPeriod().equals(secondParams.getSamplingPeriod())) {
+				throw new OperationException("Próbkowanie obu sygnałów poinno być takie samo (" + firstParams.getSamplingPeriod() + " != " + secondParams.getSamplingPeriod() + ")");
 			}
 		}
 	}
@@ -80,7 +80,6 @@ abstract class AbstractSignalOperation implements SignalOperation {
 	private List<XYChart.Data<Double, Double>> executeCalculation(List<XYChart.Data<Double, Double>> firstDataset, List<XYChart.Data<Double, Double>> secondDataset) {
 		List<XYChart.Data<Double, Double>> dataset = new ArrayList<>();
 
-
 		Iterators interators = new Iterators();
 
 		processData(firstDataset, secondDataset, dataset, interators);
@@ -88,7 +87,7 @@ abstract class AbstractSignalOperation implements SignalOperation {
 		Double firstMaxX = firstDataset.get(firstDataset.size() -1).getXValue();
 		Double secondMaxX = secondDataset.get(secondDataset.size() -1).getXValue();
 
-//		sprawdzanie, czy w drugim datasecie coś jest
+//		już przeszliśmy przez pierwszy dataset, sprawdzamy czy w drugim coś jest
 		if (firstMaxX.compareTo(secondMaxX) > 0) {
 			processData(secondDataset, firstDataset, dataset, interators);
 		}
@@ -109,7 +108,7 @@ abstract class AbstractSignalOperation implements SignalOperation {
 					dataset.add(new XYChart.Data<>(secondX, calculate(secondY, firstY)));
 					firstIter++;
 				} else {
-					dataset.add(new XYChart.Data<>(secondX, secondY));
+					dataset.add(new XYChart.Data<>(secondX, secondY)); //czy nie powinniśmy liczyć wtedy Y jako 0?
 				}
 			} else {
 				dataset.add(new XYChart.Data<>(secondX, secondY));
@@ -121,6 +120,7 @@ abstract class AbstractSignalOperation implements SignalOperation {
 
 	abstract double calculate(Double first, Double second);
 
+	//todo paramy możemy ustawić juz przy generowaniu, nie będzie dodatkowej iteracji
 	private NoiseParam prepareParams(List<XYChart.Data<Double, Double>> dataset) {
 
 		if (dataset != null &&!dataset.isEmpty()) {

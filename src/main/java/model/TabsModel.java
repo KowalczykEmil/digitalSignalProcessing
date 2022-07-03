@@ -1,7 +1,5 @@
 package model;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -21,10 +19,12 @@ public class TabsModel {
 	private int numberOfGeneratedTabs = 0;
 	private TabPane tabs;
 	private ObservableList<SignalTab> signalPanes;
+	public static TabsModel INSTANCE;
 
 	public TabsModel() {
 		tabs = new TabPane();
 		signalPanes = FXCollections.observableArrayList(new ArrayList<>());
+		this.INSTANCE = this;
 	}
 
 	public void addTab(Signal signal) {
@@ -53,22 +53,6 @@ public class TabsModel {
 		});
 	}
 
-	private void setAddTabListener() {
-		tabs.getSelectionModel().selectedItemProperty().addListener(
-				new ChangeListener<Tab>() {
-					@Override
-					public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
-						int numberOfTabs = tabs.getTabs().size();
-
-						if (tabs.getTabs().get(numberOfTabs - 1).equals(t1)) {
-							addTab(null);
-						}
-					}
-				}
-		);
-	}
-
-
 	public Node buildSignalTabContent(Signal signal) {
 		Chart chart = null;
 		Chart histogram = null;
@@ -89,31 +73,18 @@ public class TabsModel {
 		Tab graphTab = new Tab("Wykres", chartPane.getView());
 		graphTab.closableProperty().setValue(false);
 
-		Tab characteristicsTab = new Tab("Charakterystyka", characteristics);
-		characteristicsTab.closableProperty().setValue(false);
-
-
 		HistogramPane histogramPane = new HistogramPane(signal, histogram);
 		Tab histogramTab = new Tab("Histogram", histogramPane.getView());
 		histogramTab.closableProperty().setValue(false);
 
+		Tab characteristicsTab = new Tab("Charakterystyka", characteristics);
+		characteristicsTab.closableProperty().setValue(false);
+
 		tabs.getTabs().add(graphTab);
-		tabs.getTabs().add(characteristicsTab);
 		tabs.getTabs().add(histogramTab);
+		tabs.getTabs().add(characteristicsTab);
 
 		return new VBox(tabs);
-	}
-
-	public void removeTab(Tab tab){
-		tabs.getTabs().remove(tab);
-	}
-
-	public SignalTab getCurrentTab() {
-		return (SignalTab) tabs.getSelectionModel().getSelectedItem();
-	}
-
-	public Tab getCurrent() {
-		return tabs.getSelectionModel().getSelectedItem();
 	}
 
 	public TabPane getTabs() {

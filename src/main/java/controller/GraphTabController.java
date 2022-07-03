@@ -8,20 +8,16 @@ import javafx.scene.layout.VBox;
 import model.TabsModel;
 
 public class GraphTabController implements ChangeListener<Tab> {
-	TabsModel graphTabModel;
 	VBox vPanel;
 
-
-	public GraphTabController(TabsModel graphTabModel) {
-		this.graphTabModel = graphTabModel;
+	public GraphTabController() {
 		buildView();
 	}
 
 	public void buildView() {
 		vPanel = new VBox();
-		vPanel.getChildren().add(graphTabModel.getTabs());
+		vPanel.getChildren().add(TabsModel.INSTANCE.getTabs());
 	}
-
 
 	public Node getView() {
 		return vPanel;

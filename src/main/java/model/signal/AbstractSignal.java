@@ -10,17 +10,17 @@ import java.util.List;
 public abstract class AbstractSignal implements Signal {
     private final int UNIT_STEP = 1;
     private final double GRAPH_MARGIN = 1.1;
+    private final int ROUND_DIGITS = 2;
+    private final int CHART_POINT_FILTER = 10000;
     protected List<XYChart.Data<Double, Double>> dataset;
     private XYChart graphChart;
     private int intervals = 5;
     private NoiseParam noiseParam;
 
+
     public void generateSignal(NoiseParam params, List<XYChart.Data<Double, Double>> dataset) {
         this.dataset = dataset;
-        long startTime = System.nanoTime();
         refreshCharts(params);
-        System.out.println("CHART: " + ( System.nanoTime() - startTime)/100000);
-
         this.noiseParam = params;
     }
 
@@ -30,39 +30,40 @@ public abstract class AbstractSignal implements Signal {
     }
 
     protected void prepareChart(NoiseParam params) {
-        double xFrom = params.getInitialTime();
-        double xTo = params.getInitialTime() + params.getDuration();
-        double amplitude = params.getAmplitude();
-
-        NumberAxis xAxis = new NumberAxis(xFrom, xTo, (xTo - xFrom) / 20);
-        NumberAxis yAxis = new NumberAxis((-amplitude) * GRAPH_MARGIN, amplitude * GRAPH_MARGIN, UNIT_STEP);
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
         graphChart = getNewChart(xAxis, yAxis);
         graphChart.setLegendVisible(false);
     }
 
     private void bindDataToGraphChart(List<XYChart.Data<Double, Double>> dataset) {
-        XYChart.Series<Double, Double> fSeries = new XYChart.Series<>();
-        if (dataset.size() > 10000) {
-            dataset = filterPoints(dataset);
-        }
+        XYChart.Series fSeries = new XYChart.Series();
+        dataset = filterPoints(dataset);
 
         fSeries.nameProperty().unbind();
         fSeries.getData().addAll(dataset);
         graphChart.getData().addAll(fSeries);
     }
 
-    private List<XYChart.Data<Double, Double>> filterPoints(List<XYChart.Data<Double, Double>> dataset){
-        List<XYChart.Data<Double, Double>> filteredDataset = new ArrayList<>();
-        int frequencyFactor = dataset.size() / 10000;
-        int i = 0;
-        for (XYChart.Data<Double, Double> point : dataset) {
-            if (i > frequencyFactor) {
-                filteredDataset.add(point);
-                i=0;
+    private List<XYChart.Data<Double, Double>> filterPoints(List<XYChart.Data<Double, Double>> input) {
+        List<XYChart.Data<Double, Double>> output = new ArrayList<>();
+        if (input.size() > CHART_POINT_FILTER) {
+            int frequencyFactor = input.size() / CHART_POINT_FILTER;
+            int i = 0;
+            for (XYChart.Data<Double, Double> point : input) {
+                if (i > frequencyFactor) {
+                    output.add(point);
+                    i = 0;
+                }
+                i++;
             }
-            i++;
+        } else {
+            for (XYChart.Data<Double, Double> point : input) {
+                XYChart.Data<Double, Double> newPoint = new XYChart.Data<Double, Double>(point.getXValue(),point.getYValue());
+                output.add(newPoint);
+            }
         }
-        return filteredDataset;
+        return output;
     }
 
     protected XYChart getNewChart(NumberAxis xAxis, NumberAxis yAxis) {
@@ -74,98 +75,117 @@ public abstract class AbstractSignal implements Signal {
         return graphChart;
     }
 
-    @Override
     public Double getAverageValue() {
-
         double avg;
         double sumValues = 0;
+        int numberOfPoints = 0;
 
-        if (noiseParam.getBasePeriod() != null && noiseParam.getDuration() % noiseParam.getBasePeriod() != 0) {
-            double maxArg = noiseParam.getDuration() - (noiseParam.getBasePeriod() - 1);
+        if (noiseParam.getBasePeriod() != null && noiseParam.getBasePeriod() != 0) {
+            int numberOfWholePeriods = (int) (noiseParam.getDuration() / noiseParam.getBasePeriod());
+            double maxXValue = noiseParam.getInitialTime() + numberOfWholePeriods * noiseParam.getBasePeriod();
             for (var data : dataset) {
-                if (data.getXValue() <= maxArg) {
+                if (data.getXValue() <= maxXValue) {
                     sumValues += data.getYValue();
+                    numberOfPoints++;
+                } else {
+                    break;
                 }
             }
         } else {
             for (var data : dataset) {
                 sumValues += data.getYValue();
+                numberOfPoints++;
             }
         }
 
-        avg = (1.0 / dataset.size()) * sumValues;
+        avg = (1.0 / numberOfPoints) * sumValues;
 
         return Precision.round(avg, 4);
     }
 
-    @Override
     public Double getAbsoluteAverageValue() {
         double avg;
         double sumValues = 0;
+        int numberOfPoints = 0;
 
-        if (noiseParam.getBasePeriod() != null && noiseParam.getDuration() % noiseParam.getBasePeriod() != 0) {
-            double maxArg = noiseParam.getDuration() - (noiseParam.getBasePeriod() - 1);
+        if (noiseParam.getBasePeriod() != null && noiseParam.getBasePeriod() != 0) {
+            int numberOfWholePeriods = (int) (noiseParam.getDuration() / noiseParam.getBasePeriod());
+            double maxXValue = noiseParam.getInitialTime() + numberOfWholePeriods * noiseParam.getBasePeriod();
             for (var data : dataset) {
-                if (data.getXValue() <= maxArg) {
+                if (data.getXValue() <= maxXValue) {
                     sumValues += Math.abs(data.getYValue());
+                    numberOfPoints++;
+                } else {
+                    break;
                 }
             }
         } else {
             for (var data : dataset) {
                 sumValues += Math.abs(data.getYValue());
+                numberOfPoints++;
             }
         }
-        avg = (1.0 / dataset.size()) * sumValues;
+        avg = (1.0 / numberOfPoints) * sumValues;
 
         return Precision.round(avg, 4);
     }
 
-    @Override
-    public Double getWartoscSkuteczna() {
+    //wartosc skuteczna
+    public Double getRMS() {
         return Precision.round(Math.sqrt(getAvgPowers()), 4);
     }
 
-    @Override
-    public Double getVariances() {
+    public Double getVariance() {
         double variance;
         double sumValues = 0;
         double avg = getAverageValue();
+        int numberOfPoints = 0;
 
-        if (noiseParam.getBasePeriod() != null && noiseParam.getDuration() % noiseParam.getBasePeriod() != 0) {
-            double maxArg = noiseParam.getDuration() - (noiseParam.getBasePeriod() - 1);
+        if (noiseParam.getBasePeriod() != null && noiseParam.getBasePeriod() != 0) {
+            int numberOfWholePeriods = (int) (noiseParam.getDuration() / noiseParam.getBasePeriod());
+            double maxXValue = noiseParam.getInitialTime() + numberOfWholePeriods * noiseParam.getBasePeriod();
             for (var data : dataset) {
-                if (data.getXValue() <= maxArg) {
+                if (data.getXValue() <= maxXValue) {
                     sumValues += Math.pow(data.getYValue() - avg, 2);
+                    numberOfPoints++;
+                } else {
+                    break;
                 }
             }
         } else {
             for (var data : dataset) {
                 sumValues += Math.pow(data.getYValue() - avg, 2);
+                numberOfPoints++;
             }
         }
-        variance = (1.0 / dataset.size()) * sumValues;
+        variance = (1.0 / numberOfPoints) * sumValues;
 
         return Precision.round(variance, 4);
     }
 
-    @Override
     public Double getAvgPowers() {
         double avgPower;
         double sumValues = 0;
+        int numberOfPoints = 0;
 
-        if (noiseParam.getBasePeriod() != null && noiseParam.getDuration() % noiseParam.getBasePeriod() != 0) {
-            double maxArg = noiseParam.getDuration() - (noiseParam.getBasePeriod() - 1);
+        if (noiseParam.getBasePeriod() != null && noiseParam.getBasePeriod() != 0) {
+            int numberOfWholePeriods = (int) (noiseParam.getDuration() / noiseParam.getBasePeriod());
+            double maxXValue = noiseParam.getInitialTime() + numberOfWholePeriods * noiseParam.getBasePeriod();
             for (var data : dataset) {
-                if (data.getXValue() <= maxArg) {
+                if (data.getXValue() <= maxXValue) {
                     sumValues += Math.pow(data.getYValue(), 2);
+                    numberOfPoints++;
+                } else {
+                    break;
                 }
             }
         } else {
             for (var data : dataset) {
                 sumValues += Math.pow(data.getYValue(), 2);
+                numberOfPoints++;
             }
         }
-        avgPower = (1.0 / dataset.size()) * sumValues;
+        avgPower = (1.0 / numberOfPoints) * sumValues;
 
         return Precision.round(avgPower, 4);
     }
@@ -177,23 +197,23 @@ public abstract class AbstractSignal implements Signal {
         StringBuilder output = new StringBuilder();
 
         output.append("Wartość średnia sygnału: " + getAverageValue() + "\n");
-        System.out.println("Wartość średnia sygnału: " + (System.nanoTime() - startTime)/100000);
+        System.out.println("Wartość średnia sygnału: " + (System.nanoTime() - startTime) / 100000);
         startTime = System.nanoTime();
 
         output.append("Wartość średnia bezwzględna: " + getAbsoluteAverageValue() + "\n");
-        System.out.println("Wartość średnia bezwzględna: " + (System.nanoTime() - startTime)/100000);
+        System.out.println("Wartość średnia bezwzględna: " + (System.nanoTime() - startTime) / 100000);
         startTime = System.nanoTime();
 
         output.append("Moc średnia sygnału: " + getAvgPowers() + "\n");
-        System.out.println("Moc średnia sygnału: " + (System.nanoTime() - startTime)/100000);
+        System.out.println("Moc średnia sygnału: " + (System.nanoTime() - startTime) / 100000);
         startTime = System.nanoTime();
 
-        output.append("Wariancja sygnału: " + getVariances() + "\n");
-        System.out.println("Wariancja sygnału: " + (System.nanoTime() - startTime)/100000);
+        output.append("Wariancja sygnału: " + getVariance() + "\n");
+        System.out.println("Wariancja sygnału: " + (System.nanoTime() - startTime) / 100000);
         startTime = System.nanoTime();
 
-        output.append("Wartość skuteczna: " + getWartoscSkuteczna() + "\n");
-        System.out.println("Wartość skuteczna: " + (System.nanoTime() - startTime)/100000);
+        output.append("Wartość skuteczna: " + getRMS() + "\n");
+        System.out.println("Wartość skuteczna: " + (System.nanoTime() - startTime) / 100000);
 
         return output.toString();
     }
@@ -203,69 +223,76 @@ public abstract class AbstractSignal implements Signal {
         return generateBarChart();
     }
 
-
-    protected double getMinFromDataset() {          // Wyznacza najmniejszą wartość Y z datasetu (X,Y)
+    /**
+     * Wyznacza najmniejszą wartość Y z listy punktów (X,Y)
+     *
+     * @return Najmniejsza wartość Y z podanej listy
+     */
+    protected double getMinFromDataset() {
         double min = 0;
         for (int i = 0; i < dataset.size(); i++) {
-            if (dataset.get(i).getYValue().doubleValue() < min) {
-                min = dataset.get(i).getYValue().doubleValue();
+            if (dataset.get(i).getYValue() < min) {
+                min = dataset.get(i).getYValue();
             }
         }
-        return min;                                 // Najmniejsza wartość Y z danego datasetu
+        return min;
     }
 
-
-    protected double getMaxFromDataset() {          // Wyznacza największą wartość Y z datasetu (X,Y)
+    /**
+     * Wyznacza największą wartość Y z listy punktów (X,Y)
+     *
+     * @return Największa wartość Y z podanej listy
+     */
+    protected double getMaxFromDataset() {
         double max = 0;
         for (int i = 0; i < dataset.size(); i++) {
             if (dataset.get(i).getYValue().doubleValue() > max) {
                 max = dataset.get(i).getYValue().doubleValue();
             }
         }
-        return max;                                 // Największa wartość Y z danego datasetu
+        return max;
     }
 
-    /*
+    /**
      * Generuje serie danych dla wykresu słupkowego
      *
-     * start                Początek przedziału dla którego ma być wyznaczona seria danych
-     * end                  Koniec przedziału dla którego ma być wyznaczona seria danych
-     * intervalNumber       Numer przedziału
-     * param limitArgs      Ograniczenie ilości argumentów, true -> czas trwania sygnału nie jest wielokrotnością wykresu
-     * return
+     * @param start          Początek przedziału dla którego ma być wyznaczona seria danych
+     * @param end            Koniec przedziału dla którego ma być wyznaczona seria danych
+     * @param intervalNumber Numer przedziału
+     * @return
      */
-
-    protected XYChart.Series generateBarChartSeries(double start, double end, int intervalNumber, boolean limitArgs, double maxValue) {
+    private XYChart.Series generateBarChartSeries(double start, double end, int intervalNumber, double maxValue) {
         XYChart.Series series = new XYChart.Series();
-        int numOfData = dataset.size();
-        int roundDigits = 2;
         int valueCounter = 0;
-
-        if (limitArgs) {
-            double maxArg = noiseParam.getDuration() - (noiseParam.getBasePeriod() - 1);
-            for (int j = 0; j < numOfData; j++) {
-                if (intervalNumber < intervals && dataset.get(j).getXValue() <= maxArg && ((dataset.get(j).getYValue().doubleValue() >= start && dataset.get(j).getYValue().doubleValue() < end))) {
-                    valueCounter++;
-                } else if (intervalNumber == intervals && dataset.get(j).getXValue() <= maxArg && (dataset.get(j).getYValue().doubleValue() >= start && dataset.get(j).getYValue().doubleValue() <= maxValue)) {
-                    valueCounter++;
-                }
-            }
+        double maxXValue = 0;
+        if (noiseParam.getBasePeriod() != null) {
+            int numberOfWholePeriods = (int) (noiseParam.getDuration() / noiseParam.getBasePeriod());
+            maxXValue = noiseParam.getInitialTime() + numberOfWholePeriods * noiseParam.getBasePeriod();
         } else {
-            for (int j = 0; j < numOfData; j++) {
-                if (!limitArgs && intervalNumber < intervals && ((dataset.get(j).getYValue().doubleValue() >= start && dataset.get(j).getYValue().doubleValue() < end))) {
-                    valueCounter++;
-                } else if (!limitArgs && intervalNumber == intervals && (dataset.get(j).getYValue().doubleValue() >= start && dataset.get(j).getYValue().doubleValue() <= maxValue)) {
-                    valueCounter++;
-                }
+            maxXValue=dataset.get(dataset.size()-1).getXValue();
+        }
+
+        for (XYChart.Data<Double, Double> doubleDoubleData : dataset) {
+            if (doubleDoubleData.getXValue() > maxXValue) {
+                break;
+            }
+            if (intervalNumber < intervals && ((doubleDoubleData.getYValue() >= start && doubleDoubleData.getYValue() < end))) {
+                valueCounter++;
+            } else if (intervalNumber == intervals && (doubleDoubleData.getYValue() >= start && doubleDoubleData.getYValue() <= maxValue)) {
+                valueCounter++;
             }
         }
-        series.getData().add(new XYChart.Data(("(" + Precision.round(start, roundDigits) + ";" + Precision.round(end, roundDigits) + ")"), valueCounter));
+        series.getData().add(new XYChart.Data(("(" + Precision.round(start, ROUND_DIGITS) + ";" + Precision.round(end, ROUND_DIGITS) + ")"), valueCounter));
 
         return series;
     }
 
-
-    protected StackedBarChart generateBarChart() {              // Generuje wykres słupkowy -> Histogram
+    /**
+     * Generuje wykres słupkowy wykorzystywany jako histogram
+     *
+     * @return Gotowy do wyrenderowania wykres
+     */
+    private StackedBarChart generateBarChart() {
 
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
@@ -279,17 +306,12 @@ public abstract class AbstractSignal implements Signal {
         double start = minValue;
         double end = minValue + intervalWidth;
 
-        boolean limitArgs = false;
-        if (noiseParam.getBasePeriod() != null && (noiseParam.getDuration() % noiseParam.getBasePeriod() != 0)) {
-            limitArgs = true;
-        }
-
         for (int i = 1; i <= intervals; i++) {
-            bc.getData().add(generateBarChartSeries(start, end, i, limitArgs, maxValue));
+            bc.getData().add(generateBarChartSeries(start, end, i, maxValue));
             start = end;
             end = end + intervalWidth;
         }
-        return bc;                  // Gotowy wykres do narysowania
+        return bc;
     }
 
     @Override
@@ -300,7 +322,7 @@ public abstract class AbstractSignal implements Signal {
     @Override
     public void setDataset(List<XYChart.Data<Double, Double>> dataset) {
         this.dataset = dataset;
-        this.noiseParam  = getParamFromDataset();
+        this.noiseParam = getParamFromDataset();
         refreshCharts(this.noiseParam);
     }
 
@@ -328,7 +350,7 @@ public abstract class AbstractSignal implements Signal {
 
         params.setDuration(xMax - xMin);
         params.setInitialTime(xMin);
-        params.setAmplitude(yMax);
+        params.setAmplitude(Math.max(Math.abs(yMax), Math.abs(yMin)));
         return params;
     }
 

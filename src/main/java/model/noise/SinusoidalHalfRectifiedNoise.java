@@ -24,7 +24,7 @@ public class SinusoidalHalfRectifiedNoise extends AbstractNoise {
 		double finalTime = params.getInitialTime() + params.getDuration();
 		double basePeriod = params.getBasePeriod();
 
-		for (double x = initialTime; x <= finalTime; x += params.getSampling()) {
+		for (double x = initialTime; x <= finalTime; x += params.getSamplingPeriod()) {
 			double sin = Math.sin((2.0 * Math.PI / basePeriod) * (x - initialTime));
 			double y = 0.5 * amplitude * (sin + Math.abs(sin));
 			dataset.add(new XYChart.Data<>(x, y));

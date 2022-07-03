@@ -64,6 +64,21 @@ public abstract class AbstractNoise implements Noise {
 
 	@Override
 	public void setParams(NoiseParam params) {
+		if (!isAmplitudeEditorVisible()) {
+			params.setAmplitude(null);
+		}
+		if (!isInitialTimeEditorVisible()) {
+			params.setInitialTime(null);
+		}
+		if (!isDurationEditorVisible()) {
+			params.setDuration(null);
+		}
+		if (!isBasePeriodEditorVisible()) {
+			params.setBasePeriod(null);
+		}
+		if (!isFillFactorEditorVisible()) {
+			params.setFillFactor(null);
+		}
 		this.params = params;
 	}
 

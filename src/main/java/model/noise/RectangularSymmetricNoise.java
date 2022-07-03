@@ -26,7 +26,7 @@ public class RectangularSymmetricNoise extends AbstractNoise {
 		double basePeriod = params.getBasePeriod();
 		double fillFactor = params.getFillFactor();
 
-		for (double x = initialTime; x <= finalTime; x += params.getSampling()) {
+		for (double x = initialTime; x <= finalTime; x += params.getSamplingPeriod()) {
 			double y;
 			int k = (int) ((x / basePeriod) - (initialTime / basePeriod));
 
