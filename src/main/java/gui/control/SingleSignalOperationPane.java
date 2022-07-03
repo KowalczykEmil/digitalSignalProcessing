@@ -55,7 +55,7 @@ public class SingleSignalOperationPane implements EventHandler {
 
 		signalSelect = new ComboBox();
 		operationSelect = new ComboBox();
-		sampling = new TextField("10000");
+		sampling = new TextField("100");
 		quantizationStep = new TextField("0.01");
 		sincParam = new TextField("5");
 

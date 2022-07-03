@@ -1,4 +1,4 @@
-package gui.topBar;
+package gui.top_bar;
 
 import controller.BinaryController;
 import javafx.scene.Node;

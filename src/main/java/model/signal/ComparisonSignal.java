@@ -248,5 +248,9 @@ public class ComparisonSignal implements Signal {
 		return null;
 	}
 
+	@Override
+	public Signal copyOf() {
+		return null;
+	}
 
 }

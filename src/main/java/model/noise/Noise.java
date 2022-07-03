@@ -1,6 +1,6 @@
 package model.noise;
 
-import loader.FileLoader;
+import loader.FIleLoader;
 import model.NoiseParam;
 import model.signal.Signal;
 
@@ -12,5 +12,5 @@ public interface Noise {
 
 	public void setParams(NoiseParam params);
 
-	public void setInputVisibility(FileLoader editor);
+	public void setInputVisibility(FIleLoader editor);
 }

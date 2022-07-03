@@ -23,7 +23,7 @@ public class SamplingOperation implements SingleSignalOperation {
 		NoiseParam inputNoiseParam = signal.getNoiseParam();
 		NoiseParam outputNoiseParam = inputNoiseParam.copyOf();
 
-		outputNoiseParam.setSamplingPeriod(param.getSamplingFrequency());
+		outputNoiseParam.setSamplingPeriod(1/param.getSamplingFrequency());
 
 		double samplingPeriod = 1 / param.getSamplingFrequency();
 		if (signal instanceof DiscreteSignal) {

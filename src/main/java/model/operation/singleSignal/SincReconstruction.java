@@ -14,6 +14,7 @@ public class SincReconstruction implements SingleSignalOperation {
 	int currentPointIndex;
 	final double epsilon = 0.00001d;
 
+
 	@Override
 	public Signal execute(Signal signal, SingleSignalOperationParam param) throws OperationException {
 		if (!(signal instanceof DiscreteSignal)) {
@@ -41,7 +42,7 @@ public class SincReconstruction implements SingleSignalOperation {
 			double amplitude = 0 ;
 			for (int i = currentPointIndex - neighbourSamples; i <= currentPointIndex + neighbourSamples -1; i++) {
 				if (i >= 0 && i < inputDataset.size() - 1) {
-					amplitude += inputDataset.get(i).getYValue() * sinc(x / (1 / inputNoiseParam.getSamplingPeriod()) - (i));
+					amplitude += inputDataset.get(i).getYValue() * sinc(x / inputNoiseParam.getSamplingPeriod() - (i));
 				}
 			}
 			XYChart.Data<Double, Double> outputPoint = new XYChart.Data<Double, Double>(x, amplitude);

@@ -11,6 +11,7 @@ public class NoiseParam {
 	private Double basePeriod;
 	private Double fillFactor;
 	private Double samplingPeriod;
+	private Double fpr;
 
 
 	public NoiseParam copyOf() {
@@ -21,6 +22,7 @@ public class NoiseParam {
 		outputNoiseParam.setDuration(duration);
 		outputNoiseParam.setBasePeriod(duration);
 		outputNoiseParam.setFillFactor(fillFactor);
+		outputNoiseParam.setFpr(fpr);
 		return outputNoiseParam;
 	}
 

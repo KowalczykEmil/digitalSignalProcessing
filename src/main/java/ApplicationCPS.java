@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.TabsModel;
-import gui.topBar.TopMenuBar;
+import gui.top_bar.TopMenuBar;
 
 public class ApplicationCPS extends Application {
 
@@ -24,12 +24,13 @@ public class ApplicationCPS extends Application {
 		layout.setCenter(controlController.getView());
 		layout.setBottom(graphTabController.getView());
 
+
 		Scene scene = new Scene(layout, 1400, 780);
 		stage.setMinWidth(1400);
 		stage.setMinHeight(780);
 
 		stage.setScene(scene);
-		stage.setTitle("Zadanie 2 - Emil i Joasia");
+		stage.setTitle("Zadanie 3/4 - Emil i Joasia");
 		scene.getStylesheets().add("style.css");
 
 		stage.show();

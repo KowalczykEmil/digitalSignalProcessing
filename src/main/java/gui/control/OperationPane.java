@@ -38,6 +38,9 @@ public class OperationPane implements EventHandler {
 		operationss.add(new SignalSubtraction());
 		operationss.add(new SignalMultiplication());
 		operationss.add(new SignalDivision());
+		operationss.add(new ConvolutionOperation());
+		operationss.add(new CorrelationOperation());
+		operationss.add(new CorrelationConvolutionOperation());
 		operations = FXCollections.observableArrayList(operationss);
 	}
 

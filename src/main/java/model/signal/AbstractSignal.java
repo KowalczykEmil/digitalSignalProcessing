@@ -20,17 +20,25 @@ public abstract class AbstractSignal implements Signal {
 
     public void generateSignal(NoiseParam params, List<XYChart.Data<Double, Double>> dataset) {
         this.dataset = dataset;
-        refreshCharts(params);
+        refreshCharts();
         this.noiseParam = params;
     }
 
-    private void refreshCharts(NoiseParam params) {
-        prepareChart(params);
+    private void refreshCharts() {
+        prepareChart();
         bindDataToGraphChart(dataset);
     }
 
-    protected void prepareChart(NoiseParam params) {
-        final NumberAxis xAxis = new NumberAxis();
+    private void prepareChart() {
+        NumberAxis xAxis;
+        if (dataset != null && !dataset.isEmpty()) {
+            double min = dataset.get(0).getXValue();
+            double max = dataset.get(dataset.size() - 1).getXValue();
+            double unitStep = Math.abs((max - min) / 20);
+            xAxis = new NumberAxis(min - unitStep / 2, max + unitStep / 2, unitStep);
+        } else {
+            xAxis = new NumberAxis();
+        }
         final NumberAxis yAxis = new NumberAxis();
         graphChart = getNewChart(xAxis, yAxis);
         graphChart.setLegendVisible(false);
@@ -323,7 +331,7 @@ public abstract class AbstractSignal implements Signal {
     public void setDataset(List<XYChart.Data<Double, Double>> dataset) {
         this.dataset = dataset;
         this.noiseParam = getParamFromDataset();
-        refreshCharts(this.noiseParam);
+        refreshCharts();
     }
 
     private NoiseParam getParamFromDataset() {

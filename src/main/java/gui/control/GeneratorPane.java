@@ -1,6 +1,6 @@
 package gui.control;
 
-import loader.FileLoader;
+import loader.FIleLoader;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,7 +24,7 @@ import static addons.NumberFormatter.*;
 
 public class GeneratorPane implements EventHandler {
 	VBox vPane;
-	FileLoader editor;
+	FIleLoader editor;
 	private ObservableList<Noise> noises;
 	private Signal signal;
 
@@ -42,19 +42,22 @@ public class GeneratorPane implements EventHandler {
 		noisess.add(new SinusoidalNoise());
 		noisess.add(new SinusoidalHalfRectifiedNoise());
 		noisess.add(new SinusoidalTwoHalfRectifiedNoise());
-		noisess.add(new UnitImpulse());
+		noisess.add(new UnitJump());
 		noisess.add(new RectangularNoise());
 		noisess.add(new RectangularSymmetricNoise());
-		noisess.add(new UnitJump());
+		noisess.add(new StepFunction());
 		noisess.add(new TriangularNoise());
 		noisess.add(new UniformNoise());
 		noisess.add(new ImpulseNoise());
+		noisess.add(new SOne());
+		noisess.add(new SSecond());
+		noisess.add(new SThird());
 
 		noises = FXCollections.observableArrayList(noisess);
 	}
 
-	private FileLoader buildView() {
-		editor = new FileLoader();
+	private FIleLoader buildView() {
+		editor = new FIleLoader();
 		//Tak na prawdę ta klasa to jest controller, być może wynieść tą metodę do klasy Widoku
 		Label signalTypeLabel = new Label("Rodzaj sygnału:");
 		editor.signalTypeSelection = new ComboBox();
@@ -154,7 +157,7 @@ public class GeneratorPane implements EventHandler {
 		noiseParam.setBasePeriod(Double.valueOf(editor.textFieldBasePeriod.getText()));
 		noiseParam.setFillFactor(Double.valueOf(editor.textFieldFillFactor.getText()));
 		noiseParam.setSamplingPeriod(1/Double.valueOf(editor.textFieldFrequency.getText()));
-
+		noiseParam.setFpr(Double.valueOf(editor.textFieldFrequency.getText()));
 		return noiseParam;
 	}
 

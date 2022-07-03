@@ -2,7 +2,7 @@ package loader;
 
 import javafx.scene.control.*;
 
-public class FileLoader {
+public class FIleLoader {
 	public ComboBox signalTypeSelection;
 	public Button generateButton;
 
@@ -18,7 +18,7 @@ public class FileLoader {
 	public TextField textFieldInitialTime;
 	public TextField textFieldDuration;
 	public TextField textFieldBasePeriod;
-	public TextField textFieldFillFactor; //tylko dla sygnałów trojkątnych i prostokątnych
+	public TextField textFieldFillFactor;
 	public TextField textFieldHistogramIntervals;
 	public TextField textFieldFrequency;
 

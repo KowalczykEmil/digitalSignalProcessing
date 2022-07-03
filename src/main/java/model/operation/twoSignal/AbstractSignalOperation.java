@@ -34,7 +34,7 @@ abstract class AbstractSignalOperation implements SignalOperation {
 		}
 
 		List<XYChart.Data<Double, Double>> dataset = getDataset(first, second);
-		NoiseParam param = prepareParams(dataset);
+		NoiseParam param = prepareParams(dataset, firstParams.getSamplingPeriod());
 		output.generateSignal(param, dataset);
 
 		return output;
@@ -68,10 +68,12 @@ abstract class AbstractSignalOperation implements SignalOperation {
 		} else {
 			dataset = executeCalculation(firstDataset, secondDataset);
 		}
-		if(first.getNoiseParam().getBasePeriod()>second.getNoiseParam().getBasePeriod()){
-			param.setBasePeriod(first.getNoiseParam().getBasePeriod());
-		}else{
-			param.setBasePeriod(second.getNoiseParam().getBasePeriod());
+		if (first.getNoiseParam().getBasePeriod() != null && second.getNoiseParam().getBasePeriod() != null) {
+			if(first.getNoiseParam().getBasePeriod()>second.getNoiseParam().getBasePeriod()){
+				param.setBasePeriod(first.getNoiseParam().getBasePeriod());
+			}else{
+				param.setBasePeriod(second.getNoiseParam().getBasePeriod());
+			}
 		}
 
 		return dataset;
@@ -120,8 +122,7 @@ abstract class AbstractSignalOperation implements SignalOperation {
 
 	abstract double calculate(Double first, Double second);
 
-	//todo paramy możemy ustawić juz przy generowaniu, nie będzie dodatkowej iteracji
-	private NoiseParam prepareParams(List<XYChart.Data<Double, Double>> dataset) {
+	private NoiseParam prepareParams(List<XYChart.Data<Double, Double>> dataset, Double sampling) {
 
 		if (dataset != null &&!dataset.isEmpty()) {
 			double minX = dataset.get(0).getXValue();
@@ -141,6 +142,7 @@ abstract class AbstractSignalOperation implements SignalOperation {
 			param.setInitialTime(minX);
 			param.setDuration(maxX - minX);
 			param.setAmplitude(Double.max(maxY, -minY));
+			param.setSamplingPeriod(sampling);
 		}
 		return param;
 	}

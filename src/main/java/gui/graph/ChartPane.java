@@ -26,4 +26,10 @@ private void createView(){
 	public Node getView(){
 		return vPanel;
 	}
+
+	public void setChart(Chart chart) {
+		this.chart = chart;
+		vPanel.getChildren().remove(0);
+		vPanel.getChildren().add(0, chart);
+	}
 }

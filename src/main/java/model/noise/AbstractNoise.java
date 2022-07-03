@@ -1,6 +1,6 @@
 package model.noise;
 
-import loader.FileLoader;
+import loader.FIleLoader;
 import javafx.scene.chart.XYChart;
 import model.NoiseParam;
 import model.signal.Signal;
@@ -28,7 +28,7 @@ public abstract class AbstractNoise implements Noise {
 	}
 
 	@Override
-	public void setInputVisibility(FileLoader editor) {
+	public void setInputVisibility(FIleLoader editor) {
 		editor.textFieldAmplitude.setVisible(isAmplitudeEditorVisible());
 		editor.textFieldInitialTime.setVisible(isInitialTimeEditorVisible());
 		editor.textFieldDuration.setVisible(isDurationEditorVisible());

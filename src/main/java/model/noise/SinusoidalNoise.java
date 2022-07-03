@@ -25,7 +25,7 @@ public class SinusoidalNoise extends AbstractNoise {
 		double basePeriod = params.getBasePeriod();
 
 		for (double x = initialTime; x <= finalTime; x += params.getSamplingPeriod()) {
-			double verticalShift = 0; //współczynnik przesunięcia góra dół. nie mamy takiego parametru, ale może będziemy?
+			double verticalShift = 0; //współczynnik przesunięcia góra dół.
 			double y = amplitude * Math.sin((2.0 * Math.PI / basePeriod) * (x + initialTime)) + verticalShift;
 			dataset.add(new XYChart.Data<>(x, y));
 		}

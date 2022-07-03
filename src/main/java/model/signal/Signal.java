@@ -38,4 +38,5 @@ public interface Signal {
 
 	public NoiseParam getNoiseParam();
 
+	public Signal copyOf();
 }
