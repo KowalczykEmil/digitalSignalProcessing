@@ -45,7 +45,7 @@ Ostatnią implementacją w programie była funkcjonalność przetworzenia sygna�
 
 
 ### Dośw. 1  -  Zastosowanie filtru dolnoprzepustowego w celu wytłumienia składowej o wysokiej częstotliwości.
-Na samym początku wygenerowałem dwa sygnały sinusoidalne o częstotliwości 100 Hz oraz 20 Hz, następnie je do siebie dodałem. <br>
+Na samym początku wygenerowałem dwa sygnały sinusoidalne o częstotliwości 100 Hz oraz 20 Hz, następnie je do siebie dodałem. 
 W celu zaprezentowania działania fitlru, chcę wygasić z sumowanego sygnału częstotliwości 100 Hz, tak, żeby widoczna była składowa 20 Hz.
 
 Wykorzystałem filtr dolnoprzepustowy, rząd filtra czyli liczbę próbek odpowiedzi impulsowej filtra ustawiłem na wysoką wartość 191, im wyższa wartość, tym dążymy do filtru idealnego.
@@ -63,17 +63,17 @@ Dlaczego (?) -> A no dlatego, że wykorzystamy znacznie większą złożoność 
 
 <p align="center">
   <img src="resources/F_dodanie.png"> <br>
-  <b>Obraz 2.</b> Dodanie dwóch sygnałów sinusoidalnych (100 Hz + 20 Hz).
+  <b>Obraz 4.</b> Dodanie dwóch sygnałów sinusoidalnych (100 Hz + 20 Hz).
 </p>
 
 <p align="center">
   <img src="resources/filtry.png"> <br>
-  <b>Obraz 3.</b> Wykorzystany do doświadczenia - Filtr dolnoprzepustowy
+  <b>Obraz 5.</b> Wykorzystany do doświadczenia - Filtr dolnoprzepustowy
 </p>
 
 <p align="center">
   <img src="resources/odpowiedzImpulsowa.png"> <br>
-  <b>Obraz 4.</b> Otrzymana odpowiedź impulsowa, po wykorzystaniu filtra dolnoprzepustowego.
+  <b>Obraz 6.</b> Otrzymana odpowiedź impulsowa, po wykorzystaniu filtra dolnoprzepustowego.
 </p>
 
 Odpowiedź impulsową, którą otrzymałem po wykorzystaniu filtra dolnoprzepustowego na zsuomowanym sygnale (Obraz 4), muszę teraz spleść z sumowanym sygnałem.
@@ -81,16 +81,16 @@ W przypadku tej wersji programu, najpierw musiałem spróbkować zsumowany sygna
 
 <p align="center">
   <img src="resources/wytlumienie100hz.png"> <br>
-  <b>Obraz 4.</b> Wynik zastosowanego filtru dolnoprzepustowego, na zsumowanym sygnale
+  <b>Obraz 7.</b> Wynik zastosowanego filtru dolnoprzepustowego, na zsumowanym sygnale
 </p>
 
 Widać, że sygnał się zmienił. Czy tego oczekiwałem? Tak, na kolejnym obrazku gdzie wykonałem porównanie sygnału zsumowanego z tym finalnym (obraz  ), będzie można zaobserwować, że udało się wytłumić z sygnału składową 100 Hz, a została jedynie składowa o częst. 20 Hz
 
 <p align="center">
   <img src="resources/porownaniewytlumienia.png"> <br>
-  <b>Obraz 4.</b> Porównanie sygnału zsuomwanego z sygnałem na którym zastosowaliśmy filtr dolnoprzepustowy
+  <b>Obraz 8.</b> Porównanie sygnału zsuomwanego z sygnałem na którym zastosowaliśmy filtr dolnoprzepustowy
 </p>
 
-### Wniosek
+### Wniosek - dośw. 1
 Filtr dolnoprzepustowy zadziałał prawidłowo, zmniejszył amplitudę wykresu, oraz ze względu na wysoko ustawiony rząd filtra, wytłumienie składowej 100 Hz z sygnału, jest naprawdę satysfakcjonujące. Gdybym ustawił mniejszy rząd filtra, np: 80 również bym wytłumił składową 100 Hz, natomiast sam efekt nie byłby tak "idealny", mówiąc krótko, mógłbym na sygnale zauważąć nadal pewne falowania mówiące o widoczności drugiej składowej, natomiast nadal byłby to wynik satysfakcjonujący.
 Wartość miejsca odcięcia ustawiłem na 50, tak żeby znajdowała się pomiędzy jedną a drugą składową. Akceptowalne byłyby tu wartości od 40 do 60.
