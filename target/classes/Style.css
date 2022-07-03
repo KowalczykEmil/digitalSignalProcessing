@@ -1,17 +1,21 @@
+.thick-chart .chart-series-line {
+    -fx-stroke-width: 1px;
+}
+
 .root {
-    -fx-accent: #1e74c6;
-    -fx-focus-color: -fx-accent;
-    -fx-base: #876e43;
-    -fx-control-inner-background: derive(-fx-base, 35%);
+    -fx-accent: #ceb24d;
+    -fx-focus-color: yellow;
+    -fx-base: #ceb24d;
+    -fx-control-inner-background: #cece81;
     -fx-control-inner-background-alt: -fx-control-inner-background;
 }
 
 .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #000000;
 }
 
 .text-field {
-    -fx-prompt-text-fill: gray;
+    -fx-prompt-text-fill: #ffff00;
 }
 
 .titulo {
@@ -24,17 +28,18 @@
 }
 
 .button:hover {
-    -fx-text-fill: white;
+    -fx-text-fill: #cece81;
+    -fx-background-color: white;
 }
 
 .separator *.line {
-    -fx-background-color: #3C3C3C;
+    -fx-background-color: #ff0000;
     -fx-border-style: solid;
     -fx-border-width: 1px;
 }
 
 .scroll-bar {
-    -fx-background-color: derive(-fx-base, 45%)
+    -fx-background-color: #ceb24d;
 }
 
 .button:default {
@@ -42,20 +47,19 @@
 }
 
 .table-view {
-    /*-fx-background-color: derive(-fx-base, 10%);*/
     -fx-selection-bar-non-focused: derive(-fx-base, 50%);
 }
 
 .table-view .column-header .label {
     -fx-alignment: CENTER_LEFT;
-    -fx-font-weight: none;
+    -fx-font-weight: bold;
 }
 
 .list-cell:even,
 .list-cell:odd,
 .table-row-cell:even,
 .table-row-cell:odd {
-    -fx-control-inner-background: derive(-fx-base, 15%);
+    -fx-control-inner-background: #cece81;
 }
 
 .list-cell:empty,
@@ -70,17 +74,34 @@
 }
 
 .chart-vertical-grid-lines {
-    -fx-stroke: white;
+    -fx-stroke: #ceb24d;
 }
 
 .chart-horizontal-grid-lines {
-    -fx-stroke: white;
+    -fx-stroke: #ceb24d;
 }
 
 .tab-pane {
-    -fx-border-color: lightgray;
+    -fx-border-color: #000000;
 }
 
-.chart-symbol {
-    -fx-padding: 3px;
+.default-color0.chart-series-line {
+    -fx-stroke: rgb(0, 0, 0);
 }
+
+.default-color1.chart-series-line {
+    -fx-stroke: rgb(0, 255, 102);
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: rgb(0, 0, 0), white;
+}
+
+.default-color1.chart-line-symbol {
+    -fx-background-color: rgb(0, 255, 102), white;
+}
+.default-color0.chart-bar { -fx-bar-fill: #000000;}
+.default-color1.chart-bar { -fx-bar-fill: #000000; }
+
+
+

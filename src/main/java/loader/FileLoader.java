@@ -1,34 +1,23 @@
 package loader;
 
-import exceptions.ActionException;
+import javafx.scene.control.*;
 
-import java.io.*;
+public class FileLoader {
+	public ComboBox signalTypeSelection;
+	public Button generateButton;
 
-public class FileLoader<T> {
-    private String name;
+	public Label labelAmplitude;
+	public Label labelInitialTime;
+	public Label labelDuration;
+	public Label labelBasePeriod;
+	public Label labelFillFactor;
+	public Label labelHistogramIntervals;
 
-    public FileLoader(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void write(T object) throws ActionException {
-        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(name))) {
-            output.writeObject(object);
-        } catch (IOException e) {
-            throw new ActionException(e);
-        }
-    }
-
-    public T read() throws ActionException {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(name))) {
-            return (T) inputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new ActionException(e);
-        }
-    }
+	public TextField textFieldAmplitude;					  // Amplituda
+	public TextField textFieldBasePeriod;					  // Okres podstawowy
+	public TextField textFieldInitialTime;					  // Czas początkowy
+	public TextField textFieldDuration;						  // Czas trwania
+	public TextField textFieldFillFactor;                     // Współczynnik wypelnienia -> Trojkatny / Prostokątny
+	public TextField textFieldHistogramIntervals;			  // Przedział histogramu
 
 }
