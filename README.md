@@ -1,5 +1,8 @@
 # digitalSignalProcessing
 
+Pierwsza wersja programu. Za pomocą oprogramowania, można wygenerować różnego rodzaju sygnały, zarówno ciągłe jak i dyskretne.
+Dodatkową możliwośćią jest zobaczenie histogramu programu, prezentującego ilość próbek sygnału dla danego zakresu na osi odciętych. 
+
 <p align="center">
   <img src="resources/zad1_v1_program.png"> <br>
   <b>Obraz 1.</b>  Wygląd programu w wersji 1.
