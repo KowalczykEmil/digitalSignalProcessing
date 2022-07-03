@@ -44,7 +44,7 @@ Ostatnią implementacją w programie była funkcjonalność przetworzenia sygna�
 </p>
 
 
-### Dośw. 1  -  Zastosowanie filtru dolnoprzepustowego w celu wytłumienia składowej o wysokiej częstotliwości.
+### :hammer_and_wrench: Dośw. 1  -  Zastosowanie filtru dolnoprzepustowego w celu wytłumienia składowej o wysokiej częstotliwości.
 Na samym początku wygenerowałem dwa sygnały sinusoidalne o częstotliwości 100 Hz oraz 20 Hz, następnie je do siebie dodałem. 
 W celu zaprezentowania działania fitlru, chcę wygasić z sumowanego sygnału częstotliwości 100 Hz, tak, żeby widoczna była składowa 20 Hz.
 
@@ -88,7 +88,7 @@ Widać, że sygnał się zmienił. Czy tego oczekiwałem? Tak, na kolejnym obraz
 
 <p align="center">
   <img src="resources/porownaniewytlumienia.png"> <br>
-  <b>Obraz 8.</b> Porównanie sygnału zsuomwanego z sygnałem na którym zastosowaliśmy filtr dolnoprzepustowy
+  <b>Obraz 8.</b> Porównanie sygnału zsumowanego z sygnałem na którym zastosowaliśmy filtr dolnoprzepustowy
 </p>
 
 ### Wniosek - dośw. 1
