@@ -8,7 +8,60 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="MainView"
+            fx:controller="controllerView.GuiController"
             prefHeight="400.0" prefWidth="600.0">
 
+    <children>
+        <ToolBar layoutX="465.0" layoutY="19.0" prefHeight="61.0" prefWidth="700.0">
+            <items>
+                <Button minHeight="35.0" minWidth="100.0" mnemonicParsing="false" onAction="#onActionButtonGenerateData" prefHeight="35.0" prefWidth="112.0" text="Generuj Wykres" />
+                <Button minHeight="35.0" minWidth="100.0" mnemonicParsing="false" onAction="#onActionButtonReloadStage" text="Odśwież Stronę" />
+                <Button layoutX="106.0" layoutY="10.0" minHeight="35.0" minWidth="100.0" mnemonicParsing="false" onAction="#onActionButtonCloseProgram" text="Zamknij Program" />
+            </items>
+        </ToolBar>
+
+        <ToolBar layoutX="935.0" layoutY="14.0" prefHeight="61.0" prefWidth="322.0">
+            <items>
+                <Spinner fx:id="spinnerHistogramRange" prefHeight="29.0" prefWidth="70.0" />
+            </items>
+        </ToolBar>
+
+        <TabPane fx:id="tabPaneInputs" layoutX="39.0" layoutY="84.0" prefHeight="568.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Generowanie">
+                    <AnchorPane prefHeight="553.0" prefWidth="440.0">
+                        <Label layoutX="177.0" layoutY="20.0" prefHeight="28.0" prefWidth="141.0" text="Wybierz Rodzaj Sygnału" />
+
+                        <ComboBox fx:id="comboBoxSignalTypes" layoutX="46.0" layoutY="56.0" prefHeight="29.0" prefWidth="402.0" />
+                        <Pane fx:id="chooseParamsTab" layoutX="19.0" layoutY="134.0" prefHeight="392.0" prefWidth="402.0" />
+
+                    </AnchorPane>
+                </Tab>
+
+                <Tab text="Operacje">
+                    <AnchorPane>
+                        <Label layoutX="191.0" layoutY="22.0" prefHeight="28.0" prefWidth="108.0" text="Wybierz Operacje" />
+
+                        <ComboBox fx:id="comboBoxOperationTypes" layoutX="46.0" layoutY="50.0" prefHeight="29.0" prefWidth="402.0" />
+                        <Label layoutX="76.0" layoutY="130.0" text="Pierwszy Sygnał" />
+                        <ComboBox fx:id="comboBoxFirstSignal" layoutX="46.0" layoutY="165.0" prefWidth="150.0" />
+                        <Label layoutX="320.0" layoutY="130.0" text="Drugi Sygnał" />
+                        <ComboBox fx:id="comboBoxSecondSignal" layoutX="282.0" layoutY="165.0" prefWidth="150.0" />
+                    </AnchorPane>
+                </Tab>
+
+                <Tab text="Obsługa Plików">
+                    <AnchorPane>
+                        <children>
+                            <Button layoutX="100.0" layoutY="35.0" mnemonicParsing="false" onAction="#onActionLoadChart" prefHeight="50.0" prefWidth="200.0" text="Wczytaj Wykres" />
+                            <Button layoutX="295.0" layoutY="35.0" mnemonicParsing="false" onAction="#onActionSaveChart" prefHeight="50.0" prefWidth="160.0" text="Zapisz Wykres" />
+                        </children>
+                    </AnchorPane>
+                </Tab>
+            </tabs>
+        </TabPane>
+
+        <TabPane fx:id="tabPaneResults" layoutX="582.0" layoutY="84.0" minHeight="552.0" minWidth="500.0" prefHeight="568.0" prefWidth="687.0" tabClosingPolicy="UNAVAILABLE">
+        </TabPane>
+    </children>
 </AnchorPane>

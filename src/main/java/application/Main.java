@@ -7,8 +7,8 @@ import viewProperties.FrameConfiguration;
 
 public class Main extends Application {
     @Override
-    public void start(Stage primaryStage) {
-        StageController.buildStage(primaryStage, "/MainView.fxml", "Zadanie 1. Emil i Joasia",
+    public void start(Stage stage) {
+        StageController.buildStage(stage, "/MainView.fxml", "Zadanie 1. Emil i Joasia",
                 new FrameConfiguration(1300,700), "/Style.css");
 
         StageController.getApplicationStage().setResizable(false);

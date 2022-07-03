@@ -8,14 +8,13 @@ import viewProperties.StageConfiguration;
 
 import java.io.IOException;
 
-import static exceptions.Announcements.messageBox;
 
 public class StageController {
     public static Stage getApplicationStage() {
-        return StageController.getApplicationStage();
+        return StageConfiguration.getApplicationStage();
     }
 
-    public static FrameConfiguration getWindowDimensions() {
+    public static FrameConfiguration getFrameConfiguration() {
         return StageConfiguration.getFrameConfiguration();
     }
 
