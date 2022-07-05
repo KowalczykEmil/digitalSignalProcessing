@@ -134,12 +134,12 @@ W celu zrealizowania doświadczenia 2, czyli wykorzystania filtru dolnoprzepusto
 
 <p align="center">
   <img src="resources/F_dodanie.png"> <br>
-  <b>Obraz 10.</b> Dodanie dwóch sygnałów sinusoidalnych (100 Hz + 20 Hz).
+  <b>Obraz 11.</b> Dodanie dwóch sygnałów sinusoidalnych (100 Hz + 20 Hz).
 </p>
 
 <p align="center">
   <img src="resources/spróbkowanySygnał.png"> <br>
-  <b>Obraz 11.</b> Spróbkowany sygnał sinusoidalny (100 Hz + 20 Hz) -> Obraz 10.
+  <b>Obraz 12.</b> Spróbkowany sygnał sinusoidalny (100 Hz + 20 Hz) -> Obraz 10.
 </p>  <hr>
 
 #### Ciekawostka 2.
@@ -150,13 +150,13 @@ Program posiada funkcjonalność, która pozwala na edycję wykresu w czasie rze
 * Generuje losowy sygnał, w tym przypadku sygnał gaussowski, wraz z wartością 10 w polu "Ilość przedziałów histogramu"
 <p align="center">
   <img src="resources/sygnalGauss.png"> <br>
-  <b>Obraz 12.</b> Wygenerowany sygnał gaussowski. 
+  <b>Obraz 13.</b> Wygenerowany sygnał gaussowski. 
 </p>  
 
 * Sprawadzam histogram
 <p align="center">
   <img src="resources/histogram1.png"> <br>
-  <b>Obraz 13.</b> Wygenerowany sygnał gaussowski. 
+  <b>Obraz 14.</b> Wygenerowany sygnał gaussowski. 
 </p>  
 
 Histogram został wygenerowany prawidłowo. Widać na nim 10 słupków, prezentujących ilość próbek w danym zakresie na osi X. 
