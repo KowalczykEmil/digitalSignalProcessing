@@ -131,10 +131,47 @@ Za pomocą rozbicia sygnału na składowe:
 Możemy zweryfikować również, czy nie wystąpił na przykład: wyciek danych. <hr>
 
 ### Ciekawostki. 
+
+#### Ciekawostka 1.
 W celu zrealizowania doświadczenia 2, czyli wykorzystania filtru dolnoprzepustowego, należało najpierw zsumowany sygnał spróbkować, żeby móć go spleść z odpowiedzą impulsową filtru dolnoprzepustowego. Zwiazane jest to z faktem, iż chcemy tutaj dokonać splotu dyskretnego, więc potrzebujemy wykorzystać do tego sygnały dyskretne.
 
 <p align="center">
+  <img src="resources/F_dodanie.png"> <br>
+  <b>Obraz 10.</b> Dodanie dwóch sygnałów sinusoidalnych (100 Hz + 20 Hz).
+</p>
+
+<p align="center">
   <img src="resources/spróbkowanySygnał.png"> <br>
-  <b>Obraz 10.</b> Spróbkowany sygnał -> Obraz 4.
-</p> 
+  <b>Obraz 11.</b> Spróbkowany sygnał sinusoidalny (100 Hz + 20 Hz) -> Obraz 10.
+</p>  <hr>
+
+#### Ciekawostka 2.
+Przy generowaniu sygnału, wpisujemy w polu: "Ilość przedziałów histogramu" pewną wartość, oznacza ona ilość zakresów w których mieszczą się próbki. Mówiąc krótko, jeśli wpiszemy 10, wówczas na wykresie histogramu będziemy mieć oś czasu podzieloną na 10 słupków -> czyli zakresów na osi odciętych. 
+
+Program posiada funkcjonalność, która pozwala na edycję wykresu w czasie rzeczywistym. Poniżej zaprezentuję przykład.
+
+* Generuje losowy sygnał, w tym przypadku sygnał gaussowski, wraz z wartością 10 w polu "Ilość przedziałów histogramu"
+<p align="center">
+  <img src="resources/sygnalGauss.png"> <br>
+  <b>Obraz 12.</b> Wygenerowany sygnał gaussowski. 
+</p>  
+
+* Sprawadzam histogram
+<p align="center">
+  <img src="resources/histogram1.png"> <br>
+  <b>Obraz 13.</b> Wygenerowany sygnał gaussowski. 
+</p>  
+
+Histogram został wygenerowany prawidłowo. Widać na nim 10 słupków, prezentujących ilość próbek w danym zakresie na osi X. 
+
+<p align="center">
+  <img src="resources/hprzegenerujHistogram.png> <br>
+  <b>Obraz 14.</b> Histogram sygnału gaussowskiego - Ilość przedziałów: 10
+</p>  
+
+<p align="center">
+  <img src="resources/przegenerowanyHistogram.png> <br>
+  <b>Obraz 15.</b> Przegenerowany histogram - Ilość przedziałów: 20
+</p>  
+
 
