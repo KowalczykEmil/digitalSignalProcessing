@@ -163,15 +163,15 @@ Program posiada funkcjonalność, która pozwala na edycję wykresu w czasie rze
 </p>  
 
 Histogram został wygenerowany prawidłowo. Widać na nim 10 słupków, prezentujących ilość próbek w danym zakresie na osi X. 
+Teraz chciałbym zobaczyć ten sam histogram, na większej ilości zakresów, umożliwia mi to funkcja "Przegeneruj histogram", która w czasie rzeczywistym zaaktualizuje ilość przedziałów na wykresie histogramu. W tym przypadku, chciałbym z 10 zakresów, zrobić 20 zakresów.
 
 <p align="center">
-  <img src="resources/hprzegenerujHistogram.png> <br>
-  <b>Obraz 14.</b> Histogram sygnału gaussowskiego - Ilość przedziałów: 10
-</p>  
-
-<p align="center">
-  <img src="resources/przegenerowanyHistogram.png> <br>
+  <img src="resources/Histogram2.png"> <br>
   <b>Obraz 15.</b> Przegenerowany histogram - Ilość przedziałów: 20
 </p>  
+
+Wszystko zadziałało poprawnie. Gdyby kogoś interesowało, czemu histogram wygląda w ten sposób, jest to spowodowane oczywiścię funkcją sygnału gaussowskiego.
+Histogram sam w sobie, prezentuje ilość próbek w danym zakresie na osi X, można więc powiedzieć, że jest to wizualne przedstawienie prawdopodobieństwa wystąpienia próbki w danym zakresie. Ze względu na to, że w sygnale gaussowskim, występuje rozkład normalny i średnia wartość sygnału opiewa się w okolicy 0, dlatego też, histogram wygląda w taki sposób, że największe słupki występują na środku wykresu, czyli na osi X najbliżek zera. 
+
 
 
