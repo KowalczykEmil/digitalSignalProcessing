@@ -41,15 +41,14 @@ Ostatnią implementacją w programie była funkcjonalność przetworzenia sygna�
 <p align="center">
   <img src="resources/F_wyglad.png"> <br>
   <b>Obraz 1.</b> Wygląd aplikacji
-</p>
-
+</p><hr> 
 
 ### :hammer_and_wrench: Dośw. 1  -  Zastosowanie filtru dolnoprzepustowego w celu wytłumienia składowej o wysokiej częstotliwości.
 Na samym początku wygenerowałem dwa sygnały sinusoidalne o częstotliwości 100 Hz oraz 20 Hz, następnie je do siebie dodałem. 
 W celu zaprezentowania działania fitlru, chcę wygasić z sumowanego sygnału częstotliwości 100 Hz, tak, żeby widoczna była składowa 20 Hz.
 
 Wykorzystałem filtr dolnoprzepustowy, rząd filtra czyli liczbę próbek odpowiedzi impulsowej filtra ustawiłem na wysoką wartość 191, im wyższa wartość, tym dążymy do filtru idealnego.
-Dlaczego (?) -> A no dlatego, że wykorzystamy znacznie większą złożoność obliczeniową, a spadek na wykresie zacznie się najbliżej miejsca odcięcia, co spowoduje, że zmniejszy się ryzyko na brak stłumienia składowej, którą chcemy zarzymać.
+Dlaczego (?) -> A no dlatego, że wykorzystamy znacznie większą złożoność obliczeniową, a spadek na wykresie zacznie się najbliżej miejsca odcięcia, co spowoduje, że zmniejszy się ryzyko na brak stłumienia składowej, którą chcemy zatrzymać.
 
 <p align="center">
   <img src="resources/F_sinus_20.png"> <br>
@@ -89,8 +88,45 @@ Widać, że sygnał się zmienił. Czy tego oczekiwałem? Tak, na kolejnym obraz
 <p align="center">
   <img src="resources/porownaniewytlumienia.png"> <br>
   <b>Obraz 8.</b> Porównanie sygnału zsumowanego z sygnałem na którym zastosowaliśmy filtr dolnoprzepustowy
-</p>
+</p> 
 
-### Wniosek - dośw. 1
+### :left_speech_bubble: Wniosek - :hammer_and_wrench: Dośw. 1
 Filtr dolnoprzepustowy zadziałał prawidłowo, zmniejszył amplitudę wykresu, oraz ze względu na wysoko ustawiony rząd filtra, wytłumienie składowej 100 Hz z sygnału, jest naprawdę satysfakcjonujące. Gdybym ustawił mniejszy rząd filtra, np: 80 również bym wytłumił składową 100 Hz, natomiast sam efekt nie byłby tak "idealny", mówiąc krótko, mógłbym na sygnale zauważąć nadal pewne falowania mówiące o widoczności drugiej składowej, natomiast nadal byłby to wynik satysfakcjonujący.
-Wartość miejsca odcięcia ustawiłem na 50, tak żeby znajdowała się pomiędzy jedną a drugą składową. Akceptowalne byłyby tu wartości od 40 do 60.
+Wartość miejsca odcięcia ustawiłem na 50, tak żeby znajdowała się pomiędzy jedną a drugą składową. Akceptowalne byłyby tu wartości od 40 do 60. <hr>
+
+### :hammer_and_wrench: Dośw. 2  -  Pomiar odległości przy zastosowaniu korelacji.
+W programie zaimplementowana została funkcja do pomiaru odległości. Służy ona do "emulacji" sytuacji w której sygnał odbije się od przeszkody. Dzięki 
+korelacji, można przeanalizować taką sytuację, czyli zweryfikować jak bardzo dany wykres się przesunął. Dzięki umieszczonej antenie, możemy wyliczyć odległośc przeszkody od miejsca z którego ruszał sygnał. 
+
+<p align="center">
+  <img src="resources/pomiarOdleglosci.png"> <br>
+  <b>Obraz 9.</b> Odbicie sygnału od przeszkody - Zastosowanie korelacji w celu pomiaru odległości. 
+</p> 
+
+### :left_speech_bubble: Wniosek - :hammer_and_wrench: Dośw. 2
+Na wykresie widać sygnał emitowany i odbity, poniżej widać korelacje czyli porównanie podobieństwa wykresów, na którym wyświetlone jest przesunięcie sygnału w czasie.
+Odległość moglibyśmy wyliczyć, szukając na wykresie maksimum od antenty (w tym przypadku: ~474).
+
+Więc w tej sytuacji wystarczy pooliczyć ilość próbek od antenty do maksimum prezentowanego na wykresie. Następnie wspomnianą ilość próbek podzielić na 2, dlaczego (?), a no dlatego, że sygnał musiał pokonać dwie drogi: -> Do przeszkody i -> od przeszkody. <br> Na samym końcu należałoby wspomnianą ilość próbek podzieloną podzieloną na 2 przemnożyć przez wartość argumentu  "prędkość w ośrodku". Czyli: (474,24 / 2) * 1000. Wynik wyszedłby w tym przypadku w skali m/s. 
+<hr>
+
+### :hammer_and_wrench: Dośw. 3  - Dyskretne przekształcenie Fouriera -> DFT
+W aplikacji zaimplementowałem DFT, jest to implementacja samodzielna (istnieje również możliwość zaimplementowania DFT z biblioteki). 
+
+<p align="center">
+  <img src="resources/przekształcenie DFT.png"> <br>
+  <b>Obraz 9.</b> Odbicie sygnału od przeszkody - Zastosowanie korelacji w celu pomiaru odległości. 
+</p> 
+
+
+### :left_speech_bubble: Wniosek - :hammer_and_wrench: Dośw. 3
+Dzięki temu przekształceniu możemy przetransformować sygnał x(t) z dziedziny czasu w dziedzinę częstotliwości, czyli, mówiąc "po ludzku", wyznaczyć jego widmo w postaci ciągłej. To z kolei pozwala nam określić zawartość częstotliwościową dowolnego sygnału nas interesującego.
+
+Za pomocą rozbicia sygnału na składowe:
+* Część rzeczywistą
+* Część urojoną
+* Moduł liczby zespolonej
+* Argument liczby zespolonej
+
+Możemy zweryfikować również, czy nie wystąpił np: wyciek danych. 
+
