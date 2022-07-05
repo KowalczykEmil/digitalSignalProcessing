@@ -156,7 +156,7 @@ Program posiada funkcjonalność, która pozwala na edycję wykresu w czasie rze
 * Sprawadzam histogram
 <p align="center">
   <img src="resources/histogram1.png"> <br>
-  <b>Obraz 14.</b> Wygenerowany sygnał gaussowski. 
+  <b>Obraz 14.</b> Wygenerowany histogram - Ilość przedziałów ustawiona podczas generowania sygnału [10].
 </p>  
 
 Histogram został wygenerowany prawidłowo. Widać na nim 10 słupków, prezentujących ilość próbek w danym zakresie na osi X. 
