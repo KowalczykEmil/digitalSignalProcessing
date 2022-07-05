@@ -1,7 +1,4 @@
-
-# digitalSignalProcessing
-
-##  :low_brightness: Przetwarzanie sygnałów.
+##  :low_brightness: Przetwarzanie sygnałów - digitalSignalProcessing
 
 Aplikacja została napisana w języku JAVA, posiada interfejs graficzny napisany w JavaFX. <br>
 Jej głównym zadaniem jest dostarczenie funkcjonalności w celu 
@@ -9,7 +6,7 @@ przetwarzania różnego rodzaju sygnałów.
 
 ### Obecne funkcjonalności programu: 
 * Generowanie sygnału 
-* Utworzony histogram, podczas wygenerowania sygnału.
+* Utworzony histogram, podczas wygenerowania sygnału + możliwość przegenerowania wykresu w czasie rzeczywistym.
 * Obliczona charakterystyka sygnału ( wartość średnia, bezwględna, moc średnia, wariancja , wartość skuteczna)
 * Możliwe operacje arytmetyczne (dodawanie, odejmowanie, mnożenie, dzielenie sygnałów, splot, korelacja, korelacja z impl. splotu)
 * Zapis / Odczyt wykresu do/z pliku binarnego.
