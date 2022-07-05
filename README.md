@@ -115,7 +115,7 @@ W aplikacji zaimplementowałem DFT, jest to implementacja samodzielna (istnieje 
 
 <p align="center">
   <img src="resources/przekształcenie DFT.png"> <br>
-  <b>Obraz 9.</b> Odbicie sygnału od przeszkody - Zastosowanie korelacji w celu pomiaru odległości. 
+  <b>Obraz 10.</b> Dyskretne przekształcenie Fouriera - Doświadczenie na sygnale sinusoidalnym.
 </p> 
 
 
@@ -128,5 +128,13 @@ Za pomocą rozbicia sygnału na składowe:
 * Moduł liczby zespolonej
 * Argument liczby zespolonej
 
-Możemy zweryfikować również, czy nie wystąpił np: wyciek danych. 
+Możemy zweryfikować również, czy nie wystąpił na przykład: wyciek danych. <hr>
+
+### Ciekawostki. 
+W celu zrealizowania doświadczenia 2, czyli wykorzystania filtru dolnoprzepustowego, należało najpierw zsumowany sygnał spróbkować, żeby móć go spleść z odpowiedzą impulsową filtru dolnoprzepustowego. Zwiazane jest to z faktem, iż chcemy tutaj dokonać splotu dyskretnego, więc potrzebujemy wykorzystać do tego sygnały dyskretne.
+
+<p align="center">
+  <img src="resources/spróbkowanySygnał.png"> <br>
+  <b>Obraz 10.</b> Spróbkowany sygnał -> Obraz 4.
+</p> 
 
