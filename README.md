@@ -171,7 +171,7 @@ Teraz chciałbym zobaczyć ten sam histogram, na większej ilości zakresów, um
 </p>  
 
 Wszystko zadziałało poprawnie. Gdyby kogoś interesowało, czemu histogram wygląda w ten sposób, jest to spowodowane oczywiście funkcją sygnału gaussowskiego.
-Histogram sam w sobie, prezentuje ilość próbek w danym zakresie na osi X, można więc powiedzieć, że jest to wizualne przedstawienie prawdopodobieństwa wystąpienia próbki w danym zakresie. W sygnale gaussowskim, występuje rozkład normalny i średnia wartość sygnału opiewa się w okolicy 0, dlatego też, histogram wygląda w taki sposób, że największe słupki występują na środku wykresu, czyli na osi X najbliżej zera. 
+Histogram sam w sobie, prezentuje ilość próbek w danym zakresie na osi X, można więc to interpretować w ten sposób, że jest to wizualne przedstawienie prawdopodobieństwa wystąpienia próbki w danym zakresie. W sygnale gaussowskim, występuje rozkład normalny i średnia wartość sygnału opiewa się w okolicy 0, dlatego też, histogram wygląda w taki sposób, że największe słupki występują na środku wykresu, czyli w zakresach na osi X znajdujących się najbliżej zera. 
 
 
 
