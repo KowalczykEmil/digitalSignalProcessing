@@ -48,7 +48,7 @@ Na samym początku wygenerowałem dwa sygnały sinusoidalne o częstotliwości 1
 W celu zaprezentowania działania fitlru, chcę wygasić z sumowanego sygnału częstotliwości 100 Hz, tak, żeby widoczna była składowa 20 Hz.
 
 Wykorzystałem filtr dolnoprzepustowy, rząd filtra czyli liczbę próbek odpowiedzi impulsowej filtra ustawiłem na wysoką wartość 191, im wyższa wartość, tym dążymy do filtru idealnego.
-Dlaczego (?) -> A no dlatego, że wykorzystamy znacznie większą złożoność obliczeniową, a spadek na wykresie zacznie się najbliżej miejsca odcięcia, co spowoduje, że zmniejszy się ryzyko na brak stłumienia składowej, którą chcemy zarzymać.
+Dlaczego (?) -> A no dlatego, że wykorzystamy znacznie większą złożoność obliczeniową, a spadek na wykresie zacznie się najbliżej miejsca odcięcia, co spowoduje, że zmniejszy się ryzyko na brak stłumienia składowej, którą chcemy zatrzymać.
 
 <p align="center">
   <img src="resources/F_sinus_20.png"> <br>
@@ -110,4 +110,23 @@ Odległość moglibyśmy wyliczyć, szukając na wykresie maksimum od antenty (w
 Więc w tej sytuacji wystarczy pooliczyć ilość próbek od antenty do maksimum prezentowanego na wykresie. Następnie wspomnianą ilość próbek podzielić na 2, dlaczego (?), a no dlatego, że sygnał musiał pokonać dwie drogi: -> Do przeszkody i -> od przeszkody. <br> Na samym końcu należałoby wspomnianą ilość próbek podzieloną podzieloną na 2 przemnożyć przez wartość argumentu  "prędkość w ośrodku". Czyli: (474,24 / 2) * 1000. Wynik wyszedłby w tym przypadku w skali m/s. 
 <hr>
 
+### :hammer_and_wrench: Dośw. 3  - Dyskretne przekształcenie Fouriera -> DFT
+W aplikacji zaimplementowałem DFT, jest to implementacja samodzielna (istnieje również możliwość zaimplementowania DFT z biblioteki). 
+
+<p align="center">
+  <img src="resources/przekształcenie DFT.png"> <br>
+  <b>Obraz 9.</b> Odbicie sygnału od przeszkody - Zastosowanie korelacji w celu pomiaru odległości. 
+</p> 
+
+
+### :left_speech_bubble: Wniosek - :hammer_and_wrench: Dośw. 3
+Dzięki temu przekształceniu możemy przetransformować sygnał x(t) z dziedziny czasu w dziedzinę częstotliwości, czyli, mówiąc "po ludzku", wyznaczyć jego widmo w postaci ciągłej. To z kolei pozwala nam określić zawartość częstotliwościową dowolnego sygnału nas interesującego.
+
+Za pomocą rozbicia sygnału na składowe:
+* Część rzeczywistą
+* Część urojoną
+* Moduł liczby zespolonej
+* Argument liczby zespolonej
+
+Możemy zweryfikować również, czy nie wystąpił np: wyciek danych. 
 
